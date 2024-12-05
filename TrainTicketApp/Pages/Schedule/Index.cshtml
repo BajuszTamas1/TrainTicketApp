@@ -1,17 +1,10 @@
 @page
 @model TrainTicketApp.Pages.Schedule.IndexModel
 @{
-    ViewData["Title"] = "Menetrend keresés";
+    ViewData["Title"] = "Menetrendek";
 }
 
-<h1>Vonatmenetrend keresése</h1>
-
-<form method="get">
-    <input type="text" name="departure" placeholder="Indulási hely" />
-    <input type="text" name="arrival" placeholder="Érkezési hely" />
-    <input type="time" name="departureTime" placeholder="Indulási időpont" />
-    <input type="submit" value="Keresés" />
-</form>
+<h1>Vonatmenetrendek</h1>
 
 <div>
     <table class="table">
@@ -25,21 +18,53 @@
         <tbody>
         @foreach (var train in Model.Trains)
         {
-            <tr>
-                <td>@train.DepartureLocation</td>
-                <td>@train.ArrivalLocation</td>
-                <td>
-                    <ul>
-                        <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
-                        <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
-                        <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
-                        <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
-                        <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
-                        <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
-                        <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
-                    </ul>
-                </td>
-            </tr>
+            var hasService = train.Monday != TimeSpan.Zero ||
+                             train.Tuesday != TimeSpan.Zero ||
+                             train.Wednesday != TimeSpan.Zero ||
+                             train.Thursday != TimeSpan.Zero ||
+                             train.Friday != TimeSpan.Zero ||
+                             train.Saturday != TimeSpan.Zero ||
+                             train.Sunday != TimeSpan.Zero;
+
+            if (hasService)
+            {
+                <tr>
+                    <td>@train.DepartureLocation</td>
+                    <td>@train.ArrivalLocation</td>
+                    <td>
+                        <ul>
+                            @if (train.Monday != TimeSpan.Zero)
+                            {
+                                <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
+                            }
+                            @if (train.Tuesday != TimeSpan.Zero)
+                            {
+                                <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
+                            }
+                            @if (train.Wednesday != TimeSpan.Zero)
+                            {
+                                <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
+                            }
+                            @if (train.Thursday != TimeSpan.Zero)
+                            {
+                                <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
+                            }
+                            @if (train.Friday != TimeSpan.Zero)
+                            {
+                                <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
+                            }
+                            @if (train.Saturday != TimeSpan.Zero)
+                            {
+                                <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
+                            }
+                            @if (train.Sunday != TimeSpan.Zero)
+                            {
+                                <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
         }
         </tbody>
     </table>

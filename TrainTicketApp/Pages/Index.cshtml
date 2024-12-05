@@ -14,23 +14,55 @@
 </form>
 
 @if (!string.IsNullOrEmpty(Request.Query["departure"]) ||
-     !string.IsNullOrEmpty(Request.Query["arrival"]) ||
-     !string.IsNullOrEmpty(Request.Query["departureTime"]))
+!string.IsNullOrEmpty(Request.Query["arrival"]) ||
+!string.IsNullOrEmpty(Request.Query["departureTime"]))
 {
     if (Model.Trains != null && Model.Trains.Any())
     {
         <h2>Eredmények:</h2>
         <ul>
-            @foreach (var train in Model.Trains)
+    @foreach (var train in Model.Trains)
             {
-                <li>@train.DepartureLocation - @train.ArrivalLocation</li>
-                <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
-                <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
-                <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
-                <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
-                <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
-                <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
-                <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
+                var hasService = train.Monday != TimeSpan.Zero ||
+                train.Tuesday != TimeSpan.Zero ||
+                train.Wednesday != TimeSpan.Zero ||
+                train.Thursday != TimeSpan.Zero ||
+                train.Friday != TimeSpan.Zero ||
+                train.Saturday != TimeSpan.Zero ||
+                train.Sunday != TimeSpan.Zero;
+
+                if (hasService)
+                {
+                    <li>@train.DepartureLocation - @train.ArrivalLocation</li>
+                    @if (train.Monday != TimeSpan.Zero)
+                    {
+                        <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Tuesday != TimeSpan.Zero)
+                    {
+                        <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Wednesday != TimeSpan.Zero)
+                    {
+                        <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Thursday != TimeSpan.Zero)
+                    {
+                        <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Friday != TimeSpan.Zero)
+                    {
+                        <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Saturday != TimeSpan.Zero)
+                    {
+                        <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Sunday != TimeSpan.Zero)
+                    {
+                        <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
+                    }
+                }
             }
         </ul>
     }
@@ -38,4 +70,6 @@
     {
         <p>Nincs találat a megadott keresési feltételekre.</p>
     }
+
+
 }

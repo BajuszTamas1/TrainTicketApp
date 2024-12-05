@@ -1,12 +1,12 @@
-// TrainTicketApp/Pages/Orders/Create.cshtml.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using TrainTicketApp.Data;
+using System.Threading.Tasks;
 using TrainTicketApp.Models;
-using System.ComponentModel.DataAnnotations;
+using TrainTicketApp.Data;
 
 namespace TrainTicketApp.Pages.Orders
 {
@@ -19,50 +19,27 @@ namespace TrainTicketApp.Pages.Orders
             _context = context;
         }
 
-        [BindProperty, Required]
-        public int TrainId { get; set; }
-        [BindProperty, Required]
-        public string UserName { get; set; }
-        [BindProperty, Required]
-        public string UserAddress { get; set; }
-        [BindProperty, Required]
-        public string UserEmail { get; set; }
-        [BindProperty, Required]
-        public string UserPhone { get; set; }
-        [BindProperty, Required]
-        public string TicketType { get; set; }
-        public int OrderId { get; set; }
-        public IList<Train> Trains { get; set; } = new List<Train>();
+        [BindProperty]
+        public Order NewOrder { get; set; }
+        public IList<Train> AvailableTrains { get; set; } = new List<Train>();
 
-        public void OnGet()
+        public async Task<IActionResult>  OnGetAsync()
         {
-            Trains = _context.Trains.ToList();
+            AvailableTrains = await _context.Trains.ToListAsync();
+            return Page();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                AvailableTrains = await _context.Trains.ToListAsync();
                 return Page();
             }
 
-            var order = new Order
-            {
-                TrainId = TrainId,
-                UserName = UserName,
-                UserAddress = UserAddress,
-                UserEmail = UserEmail,
-                UserPhone = UserPhone,
-                TicketType = TicketType,
-                Status = "Active"
-            };
-
-            _context.Orders.Add(order);
-            _context.SaveChanges();
-
-            OrderId = order.Id;
-
-            return RedirectToPage("./Index");
+            _context.Orders.Add(NewOrder);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("./OrderConfirmation", new { id = NewOrder.Id });
         }
     }
 }

@@ -11,20 +11,59 @@
     <input type="submit" value="View Order" />
 </form>
 
-@if (Model.Order != null)
+@if (Model.Order != null && Model.Train != null)
 {
-    <div>
-        <h2>Order Details</h2>
-        <p>Order ID: @Model.Order.Id</p>
-        <p>Order Date: @Model.Order.OrderDate</p>
-        <p>Customer Name: @Model.Order.UserName</p>
-        <p>Customer Address: @Model.Order.UserAddress</p>
-        <p>Customer Email: @Model.Order.UserEmail</p>
-        <p>Customer Phone: @Model.Order.UserPhone</p>
-        <p>Ticket Type: @Model.Order.TicketType</p>
-        <p>Train: @Model.Order.Train.DepartureLocation - @Model.Order.Train.ArrivalLocation</p>
-        <p>Departure time: @Model.Order.Train.</p>
-        <p>Status: @Model.Order.Status</p>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Rendelés részletei</h2>
+            <p>Rendelés azonosító: @Model.Order.Id</p>
+            <p>Felhasználó: @Model.Order.UserName</p>
+            <p>Cím: @Model.Order.UserAddress</p>
+            <p>Email: @Model.Order.UserEmail</p>
+            <p>Telefonszám: @Model.Order.UserPhone</p>
+            <p>Jegytípus: @Model.Order.TicketType</p>
+            <p>Rendelés dátuma: @Model.Order.OrderDate</p>
+            <p>Állapot: @Model.Order.Status</p>
+        </div>
+        <div class="col-md-6">
+            <h2>Vonat részletei</h2>
+            <p>Indulási hely: @Model.Train.DepartureLocation</p>
+            <p>Érkezési hely: @Model.Train.ArrivalLocation</p>
+            <p>Várható útidő: @Model.Train.TravelTime</p>
+            <p>Ár: @Model.Train.Price Ft</p>
+            <p>Távolság: @Model.Train.Distance km</p>
+            <p>Indulási időpontok:</p>
+            <ul>
+                @if (Model.Train.Monday != TimeSpan.Zero)
+                {
+                    <li>Hétfő: @Model.Train.Monday.ToString(@"hh\:mm")</li>
+                }
+                @if (Model.Train.Tuesday != TimeSpan.Zero)
+                {
+                    <li>Kedd: @Model.Train.Tuesday.ToString(@"hh\:mm")</li>
+                }
+                @if (Model.Train.Wednesday != TimeSpan.Zero)
+                {
+                    <li>Szerda: @Model.Train.Wednesday.ToString(@"hh\:mm")</li>
+                }
+                @if (Model.Train.Thursday != TimeSpan.Zero)
+                {
+                    <li>Csütörtök: @Model.Train.Thursday.ToString(@"hh\:mm")</li>
+                }
+                @if (Model.Train.Friday != TimeSpan.Zero)
+                {
+                    <li>Péntek: @Model.Train.Friday.ToString(@"hh\:mm")</li>
+                }
+                @if (Model.Train.Saturday != TimeSpan.Zero)
+                {
+                    <li>Szombat: @Model.Train.Saturday.ToString(@"hh\:mm")</li>
+                }
+                @if (Model.Train.Sunday != TimeSpan.Zero)
+                {
+                    <li>Vasárnap: @Model.Train.Sunday.ToString(@"hh\:mm")</li>
+                }
+            </ul>
+        </div>
 
         @if (Model.Order.Status == "Active")
         {
@@ -34,8 +73,4 @@
             </form>
         }
     </div>
-}
-else
-{
-    <p>No order found for the specified ID.</p>
 }

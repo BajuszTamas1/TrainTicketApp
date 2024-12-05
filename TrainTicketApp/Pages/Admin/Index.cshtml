@@ -13,13 +13,24 @@
     <input type="number" asp-for="Price" placeholder="Ár" required />
     <input type="text" asp-for="TravelTime" placeholder="Időtartam (hh:mm)" required />
 
-    @foreach (var day in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
-    {
-        <h4>@day</h4>
-        <input type="text" name="DepartureTimes[@day]" placeholder="Indulási idő (hh:mm)" />
-    }
+    <div class="form-group">
+        <h4>Hétfő</h4>
+        <input type="text" asp-for="Monday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
+        <h4>Kedd</h4>
+        <input type="text" asp-for="Tuesday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
+        <h4>Szerda</h4>
+        <input type="text" asp-for="Wednesday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
+        <h4>Csütörtök</h4>
+        <input type="text" asp-for="Thursday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
+        <h4>Péntek</h4>
+        <input type="text" asp-for="Friday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
+        <h4>Szombat</h4>
+        <input type="text" asp-for="Saturday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
+        <h4>Vasárnap</h4>
+        <input type="text" asp-for="Sunday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
+    </div>
 
-    <input type="submit" value="Járat hozzáadása" />
+    <input type="submit" value="Járat hozzáadása" class="btn btn-primary" />
 </form>
 
 @if (Model.TrainAdded)
@@ -48,13 +59,34 @@
             <td>@train.ArrivalLocation</td>
             <td>
                 <ul>
-                    <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
-                    <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
-                    <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
-                    <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
-                    <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
-                    <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
-                    <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
+                    @if (train.Monday != TimeSpan.Zero)
+                    {
+                        <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Tuesday != TimeSpan.Zero)
+                    {
+                        <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Wednesday != TimeSpan.Zero)
+                    {
+                        <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Thursday != TimeSpan.Zero)
+                    {
+                        <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Friday != TimeSpan.Zero)
+                    {
+                        <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Saturday != TimeSpan.Zero)
+                    {
+                        <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
+                    }
+                    @if (train.Sunday != TimeSpan.Zero)
+                    {
+                        <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
+                    }
                 </ul>
             </td>
             <td>
@@ -66,17 +98,26 @@
                     <input type="number" name="Price" value="@train.Price" required />
                     <input type="text" name="TravelTime" value="@train.TravelTime" required />
 
-                    @foreach (var day in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
-                    {
-                        <h4>@day</h4>
-                        <input type="text" name="DepartureTimes[@day]" value="@train.GetType().GetProperty(day.ToString()).GetValue(train)?" />
-                    }
+                    <h4>Hétfő</h4>
+                    <input type="text" name="Monday" value="@train.Monday.ToString(@"hh\:mm")" class="form-control-inline" />
+                    <h4>Kedd</h4>
+                    <input type="text" name="Tuesday" value="@train.Tuesday.ToString(@"hh\:mm")" class="form-control-inline" />
+                    <h4>Szerda</h4>
+                    <input type="text" name="Wednesday" value="@train.Wednesday.ToString(@"hh\:mm")" class="form-control-inline" />
+                    <h4>Csütörtök</h4>
+                    <input type="text" name="Thursday" value="@train.Thursday.ToString(@"hh\:mm")" class="form-control-inline" />
+                    <h4>Péntek</h4>
+                    <input type="text" name="Friday" value="@train.Friday.ToString(@"hh\:mm")" class="form-control-inline" />
+                    <h4>Szombat</h4>
+                    <input type="text" name="Saturday" value="@train.Saturday.ToString(@"hh\:mm")" class="form-control-inline" />
+                    <h4>Vasárnap</h4>
+                    <input type="text" name="Sunday" value="@train.Sunday.ToString(@"hh\:mm")" class="form-control-inline" />
 
-                    <input type="submit" value="Szerkesztés" />
+                    <input type="submit" value="Szerkesztés" class="btn btn-primary" />
                 </form>
                 <form method="post" asp-page-handler="Delete">
                     <input type="hidden" name="id" value="@train.Id" />
-                    <input type="submit" value="Törlés" />
+                    <input type="submit" value="Törlés" class="btn btn-danger" />
                 </form>
             </td>
         </tr>

@@ -11,7 +11,6 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Train> Trains { get; set; }
     public DbSet<Order> Orders { get; set; }
-// TrainTicketApp/Data/ApplicationDbContext.cs
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 

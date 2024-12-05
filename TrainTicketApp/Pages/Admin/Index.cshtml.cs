@@ -1,4 +1,3 @@
-// TrainTicketApp/Pages/Admin/Index.cshtml.cs
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -32,7 +31,19 @@ namespace TrainTicketApp.Pages.Admin
         [BindProperty, Required]
         public string TravelTime { get; set; }
         [BindProperty]
-        public Dictionary<DayOfWeek, string> DepartureTimes { get; set; } = new Dictionary<DayOfWeek, string>();
+        public string Monday { get; set; }
+        [BindProperty]
+        public string Tuesday { get; set; }
+        [BindProperty]
+        public string Wednesday { get; set; }
+        [BindProperty]
+        public string Thursday { get; set; }
+        [BindProperty]
+        public string Friday { get; set; }
+        [BindProperty]
+        public string Saturday { get; set; }
+        [BindProperty]
+        public string Sunday { get; set; }
 
         public bool TrainAdded { get; set; }
         public IList<Train> Trains { get; set; } = new List<Train>();
@@ -42,12 +53,12 @@ namespace TrainTicketApp.Pages.Admin
             Trains = await _context.Trains.ToListAsync();
         }
 
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!Regex.IsMatch(TravelTime, @"^([0-9]|[0-1][0-9]|2[0-3]):[0-5][0-9]$"))
             {
                 ModelState.AddModelError("TravelTime", "Invalid time format. Please use hh:mm or h:mm.");
-                return;
+                return Page();
             }
 
             var train = new Train
@@ -56,13 +67,14 @@ namespace TrainTicketApp.Pages.Admin
                 ArrivalLocation = ArrivalLocation,
                 Distance = Distance,
                 Price = Price,
-                Monday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Monday, "00:00")),
-                Tuesday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Tuesday, "00:00")),
-                Wednesday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Wednesday, "00:00")),
-                Thursday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Thursday, "00:00")),
-                Friday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Friday, "00:00")),
-                Saturday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Saturday, "00:00")),
-                Sunday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Sunday, "00:00"))
+                TravelTime = TravelTime, // Ensure TravelTime is set
+                Monday = TimeSpan.TryParse(Monday, out var monday) ? monday : TimeSpan.Zero,
+                Tuesday = TimeSpan.TryParse(Tuesday, out var tuesday) ? tuesday : TimeSpan.Zero,
+                Wednesday = TimeSpan.TryParse(Wednesday, out var wednesday) ? wednesday : TimeSpan.Zero,
+                Thursday = TimeSpan.TryParse(Thursday, out var thursday) ? thursday : TimeSpan.Zero,
+                Friday = TimeSpan.TryParse(Friday, out var friday) ? friday : TimeSpan.Zero,
+                Saturday = TimeSpan.TryParse(Saturday, out var saturday) ? saturday : TimeSpan.Zero,
+                Sunday = TimeSpan.TryParse(Sunday, out var sunday) ? sunday : TimeSpan.Zero
             };
 
             _context.Trains.Add(train);
@@ -70,14 +82,15 @@ namespace TrainTicketApp.Pages.Admin
 
             TrainAdded = true;
             await OnGetAsync(); // Refresh the list after adding a new train
+            return RedirectToPage();
         }
 
-        public async Task OnPostEditAsync(int id)
+        public async Task<IActionResult> OnPostEditAsync(int id)
         {
             if (!Regex.IsMatch(TravelTime, @"^([0-9]|[0-1][0-9]|2[0-3]):[0-5][0-9]$"))
             {
                 ModelState.AddModelError("TravelTime", "Invalid time format. Please use hh:mm or h:mm.");
-                return;
+                return Page();
             }
 
             var train = await _context.Trains.FindAsync(id);
@@ -87,21 +100,23 @@ namespace TrainTicketApp.Pages.Admin
                 train.ArrivalLocation = ArrivalLocation;
                 train.Distance = Distance;
                 train.Price = Price;
-                train.Monday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Monday, "00:00"));
-                train.Tuesday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Tuesday, "00:00"));
-                train.Wednesday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Wednesday, "00:00"));
-                train.Thursday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Thursday, "00:00"));
-                train.Friday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Friday, "00:00"));
-                train.Saturday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Saturday, "00:00"));
-                train.Sunday = TimeSpan.Parse(DepartureTimes.GetValueOrDefault(DayOfWeek.Sunday, "00:00"));
+                train.TravelTime = TravelTime; // Ensure TravelTime is set
+                train.Monday = TimeSpan.TryParse(Monday, out var monday) ? monday : TimeSpan.Zero;
+                train.Tuesday = TimeSpan.TryParse(Tuesday, out var tuesday) ? tuesday : TimeSpan.Zero;
+                train.Wednesday = TimeSpan.TryParse(Wednesday, out var wednesday) ? wednesday : TimeSpan.Zero;
+                train.Thursday = TimeSpan.TryParse(Thursday, out var thursday) ? thursday : TimeSpan.Zero;
+                train.Friday = TimeSpan.TryParse(Friday, out var friday) ? friday : TimeSpan.Zero;
+                train.Saturday = TimeSpan.TryParse(Saturday, out var saturday) ? saturday : TimeSpan.Zero;
+                train.Sunday = TimeSpan.TryParse(Sunday, out var sunday) ? sunday : TimeSpan.Zero;
 
                 await _context.SaveChangesAsync();
             }
 
             await OnGetAsync(); // Refresh the list after editing a train
+            return RedirectToPage();
         }
 
-        public async Task OnPostDeleteAsync(int id)
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
             var train = await _context.Trains.FindAsync(id);
             if (train != null)
@@ -110,7 +125,7 @@ namespace TrainTicketApp.Pages.Admin
                 await _context.SaveChangesAsync();
             }
 
-            await OnGetAsync(); // Refresh the list after deleting a train
+            return RedirectToPage();
         }
     }
 }
