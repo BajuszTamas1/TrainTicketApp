@@ -1,0 +1,41 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Menetrend keresés";
+}
+
+<h1>Vonatmenetrend keresése</h1>
+
+<form method="get">
+    <input type="text" name="departure" placeholder="Indulási hely" />
+    <input type="text" name="arrival" placeholder="Érkezési hely" />
+    <input type="time" name="departureTime" placeholder="Indulási időpont" />
+    <input type="submit" value="Keresés" />
+</form>
+
+@if (!string.IsNullOrEmpty(Request.Query["departure"]) ||
+     !string.IsNullOrEmpty(Request.Query["arrival"]) ||
+     !string.IsNullOrEmpty(Request.Query["departureTime"]))
+{
+    if (Model.Trains != null && Model.Trains.Any())
+    {
+        <h2>Eredmények:</h2>
+        <ul>
+            @foreach (var train in Model.Trains)
+            {
+                <li>@train.DepartureLocation - @train.ArrivalLocation</li>
+                @foreach (var departureTime in train.DepartureTimes.OrderBy(dt => dt.DayOfWeek).ThenBy(dt => dt.DepartureTime))
+                {
+                    <h4>@departureTime.DayOfWeek</h4>
+                    <ul>
+                        <li>@departureTime.DepartureTime.ToString(@"hh\:mm")</li>
+                    </ul>
+                }
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Nincs találat a megadott keresési feltételekre.</p>
+    }
+}

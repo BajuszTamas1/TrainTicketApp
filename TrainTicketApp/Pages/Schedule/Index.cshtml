@@ -1,0 +1,37 @@
+@page
+@model TrainTicketApp.Pages.Schedule.IndexModel
+@{
+    ViewData["Title"] = "Vonatok Listája";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Indulási hely</th>
+            <th>Érkezési hely</th>
+            <th>Indulási idő</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var train in Model.Trains)
+        {
+            <tr>
+                <td>@train.DepartureLocation</td>
+                <td>@train.ArrivalLocation</td>
+                <td>
+                    @foreach (var departureTime in train.DepartureTimes.OrderBy(dt => dt.DayOfWeek).ThenBy(dt => dt.DepartureTime))
+                    {
+                        <h4>@departureTime.DayOfWeek</h4>
+                        <ul>
+                            <li>@departureTime.DepartureTime.ToString(@"hh\:mm")</li>
+                        </ul>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

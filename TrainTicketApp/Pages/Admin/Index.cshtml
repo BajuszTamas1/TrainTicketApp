@@ -1,0 +1,83 @@
+@page
+@model AdminIndexModel
+@{
+    ViewData["Title"] = "Admin Felület";
+}
+
+<h1>Admin Felület</h1>
+
+<form method="post">
+    <input type="text" asp-for="DepartureLocation" placeholder="Indulási hely" required/>
+    <input type="text" asp-for="ArrivalLocation" placeholder="Érkezési hely" required/>
+    <input type="number" asp-for="Distance" placeholder="Táv" required/>
+    <input type="number" asp-for="Price" placeholder="Ár" required/>
+    <input type="text" asp-for="TravelTime" placeholder="Időtartam (hh:mm)" required/>
+
+    @foreach (var day in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
+    {
+        <h4>@day</h4>
+        <input type="text" name="DepartureTimes[@day][]" placeholder="Indulási idő (hh:mm)"/>
+    }
+
+    <input type="submit" value="Járat hozzáadása"/>
+</form>
+
+@if (Model.TrainAdded)
+{
+    <p>A járat sikeresen hozzáadva!</p>
+}
+
+<br />
+<br />
+
+<h2>Járatok listája</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Indulási hely</th>
+        <th>Érkezési hely</th>
+        <th>Indulási idő</th>
+        <th>Műveletek</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var train in Model.Trains)
+    {
+        <tr>
+            <td>@train.DepartureLocation</td>
+            <td>@train.ArrivalLocation</td>
+            <td>
+                @foreach (var departureTime in train.DepartureTimes.OrderBy(dt => dt.DayOfWeek).ThenBy(dt => dt.DepartureTime))
+                {
+                    <h4>@departureTime.DayOfWeek</h4>
+                    <ul>
+                        <li>@departureTime.DepartureTime.ToString(@"hh\:mm")</li>
+                    </ul>
+                }
+            </td>
+            <td>
+                <form method="post" asp-page-handler="Edit">
+                    <input type="hidden" name="id" value="@train.Id" />
+                    <input type="text" name="DepartureLocation" value="@train.DepartureLocation" required />
+                    <input type="text" name="ArrivalLocation" value="@train.ArrivalLocation" required />
+                    <input type="number" name="Distance" value="@train.Distance" required />
+                    <input type="number" name="Price" value="@train.Price" required />
+                    <input type="text" name="TravelTime" value="@train.TravelTime" required />
+
+                    @foreach (var day in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
+                    {
+                        <h4>@day</h4>
+                        <input type="text" name="DepartureTimes[@day][]" value="@train.DepartureTimes.FirstOrDefault(dt => dt.DayOfWeek == day)?.DepartureTime.ToString(@"hh\:mm")" />
+                    }
+
+                    <input type="submit" value="Szerkesztés" />
+                </form>
+                <form method="post" asp-page-handler="Delete">
+                    <input type="hidden" name="id" value="@train.Id" />
+                    <input type="submit" value="Törlés" />
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

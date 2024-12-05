@@ -1,0 +1,59 @@
+@page
+@model TrainTicketApp.Pages.Orders.CreateOrderModel
+@{
+    ViewData["Title"] = "Új Rendelés";
+}
+
+<h1>Új Rendelés Leadása</h1>
+
+<form method="post">
+    <div>
+        <label for="TrainId">Válasszon vonatot:</label>
+        <select asp-for="TrainId" class="form-control">
+            <option value="">-- Válasszon vonatot --</option>
+            @if (Model.Trains != null && Model.Trains.Any())
+            {
+                @foreach (var train in Model.Trains)
+                {
+                    @foreach (var departureTime in train.DepartureTimes.OrderBy(dt => dt.DayOfWeek).ThenBy(dt => dt.DepartureTime))
+                    {
+                        <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation - @departureTime.DayOfWeek @departureTime.DepartureTime.ToString(@"hh\:mm")</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div>
+        <label asp-for="UserName">Név</label>
+        <input asp-for="UserName" class="form-control" placeholder="Név" required />
+    </div>
+    <div>
+        <label asp-for="UserAddress">Cím</label>
+        <input asp-for="UserAddress" class="form-control" placeholder="Cím" required />
+    </div>
+    <div>
+        <label asp-for="UserEmail">E-mail</label>
+        <input asp-for="UserEmail" class="form-control" type="email" placeholder="Email" required />
+    </div>
+    <div>
+        <label asp-for="UserPhone">Telefonszám</label>
+        <input asp-for="UserPhone" class="form-control" type="tel" placeholder="Telefonszám (+36xxxxxxxxx)" required pattern="^\+?[1-9]\d{1,14}$" />
+        <span class="text-danger" asp-validation-for="UserPhone"></span>
+    </div>
+    <div>
+        <label asp-for="TicketType">Jegytípus</label>
+        <select asp-for="TicketType" class="form-control">
+            <option value="Normal">Normál</option>
+            <option value="Supplementary">Pótjegy</option>
+            <option value="SeatReservation">Helyjegy</option>
+        </select>
+    </div>
+    <div>
+        <input type="submit" value="Rendelés Leadása" class="btn btn-primary" />
+    </div>
+</form>
+
+@if (Model.OrderId != 0)
+{
+    <p>A rendelés sikeresen rögzítve! Rendelés azonosító: @Model.OrderId</p>
+}

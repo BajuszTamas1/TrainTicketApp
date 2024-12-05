@@ -1,0 +1,20 @@
+﻿<Properties StartupConfiguration="{C7360C15-4191-4890-AAF7-C4B3ECF73127}|http">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="TrainTicketApp" expanded="True">
+            <Node name="TrainTicketApp" expanded="True" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.TrainTicketApp PreferredExecutionTarget="/Applications/Opera GX.app" />
+  <MultiItemStartupConfigurations />
+</Properties>

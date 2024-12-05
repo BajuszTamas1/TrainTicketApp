@@ -1,0 +1,17 @@
+@page
+@model ExportModel
+@{
+    ViewData["Title"] = "Menetrend Exportálása";
+}
+
+<h1>Menetrend XML formátumban</h1>
+
+<form method="post">
+    <input type="submit" value="Exportálás" />
+</form>
+
+@if (Model.XmlData != null)
+{
+    <h2>Exportált XML:</h2>
+    <pre>@Model.XmlData</pre>
+}

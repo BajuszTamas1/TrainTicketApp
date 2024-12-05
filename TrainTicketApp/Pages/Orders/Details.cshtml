@@ -1,0 +1,41 @@
+@page
+@model TrainTicketApp.Pages.Orders.DetailsModel
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="get">
+    <input type="number" name="orderId" placeholder="Order ID" />
+    <input type="submit" value="View Order" />
+</form>
+
+@if (Model.Order != null)
+{
+    <div>
+        <h2>Order Details</h2>
+        <p>Order ID: @Model.Order.Id</p>
+        <p>Order Date: @Model.Order.OrderDate</p>
+        <p>Customer Name: @Model.Order.UserName</p>
+        <p>Customer Address: @Model.Order.UserAddress</p>
+        <p>Customer Email: @Model.Order.UserEmail</p>
+        <p>Customer Phone: @Model.Order.UserPhone</p>
+        <p>Ticket Type: @Model.Order.TicketType</p>
+        <p>Train: @Model.Order.Train.DepartureLocation - @Model.Order.Train.ArrivalLocation</p>
+        <p>Departure time: @Model.Order.Train.</p>
+        <p>Status: @Model.Order.Status</p>
+
+        @if (Model.Order.Status == "Active")
+        {
+            <form method="post" asp-page-handler="Cancel">
+                <input type="hidden" name="orderId" value="@Model.Order.Id" />
+                <input type="submit" value="Cancel Order" />
+            </form>
+        }
+    </div>
+}
+else
+{
+    <p>No order found for the specified ID.</p>
+}
