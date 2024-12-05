@@ -7,7 +7,8 @@ namespace TrainTicketApp.Models
     {
         public int Id { get; set; }
         public int TrainId { get; set; }
+        public Train Train { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
-        public TimeSpan DepartureTime { get; set; }
+        public string DepartureTime { get; set; }
     }
 }

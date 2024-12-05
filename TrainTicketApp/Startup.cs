@@ -14,9 +14,12 @@ public class Startup
 {
     services.AddRazorPages();
     services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlite("Data Source=TrainTickets.db"));
+        options.UseSqlite("Data Source=trains.db"));
     services.AddScoped<ITrainService, TrainService>();
     services.AddScoped<IOrderService, OrderService>();
+    services.AddScoped<ITrainDepartureTimeService, TrainDepartureTimeService>();
+
+    services.AddRazorPages();
 }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceCollection services)

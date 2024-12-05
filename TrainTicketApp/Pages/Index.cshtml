@@ -1,5 +1,5 @@
 ﻿@page
-@model IndexModel
+@model TrainTicketApp.Pages.IndexModel
 @{
     ViewData["Title"] = "Menetrend keresés";
 }
@@ -24,13 +24,13 @@
             @foreach (var train in Model.Trains)
             {
                 <li>@train.DepartureLocation - @train.ArrivalLocation</li>
-                @foreach (var departureTime in train.DepartureTimes.OrderBy(dt => dt.DayOfWeek).ThenBy(dt => dt.DepartureTime))
-                {
-                    <h4>@departureTime.DayOfWeek</h4>
-                    <ul>
-                        <li>@departureTime.DepartureTime.ToString(@"hh\:mm")</li>
-                    </ul>
-                }
+                <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
+                <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
+                <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
+                <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
+                <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
+                <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
+                <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
             }
         </ul>
     }

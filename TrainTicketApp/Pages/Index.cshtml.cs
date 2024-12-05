@@ -1,14 +1,11 @@
-// TrainTicketApp/Pages/Index.cshtml.cs
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using TrainTicketApp.Models;
 using TrainTicketApp.Data;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace TrainTicketApp.Pages
 {
@@ -29,21 +26,34 @@ namespace TrainTicketApp.Pages
         {
             try
             {
-                // Example JSON string (replace with actual JSON input)
-                string jsonString = "{ \"example\": \"data\" }";
+                var query = _context.Trains.AsQueryable();
 
-                // Log the JSON string
-                _logger.LogInformation("Deserializing JSON: {JsonString}", jsonString);
+                if (!string.IsNullOrEmpty(departure))
+                {
+                    query = query.Where(t => t.DepartureLocation.Contains(departure));
+                }
 
-                // Deserialize the JSON string
-                var data = JsonSerializer.Deserialize<object>(jsonString);
+                if (!string.IsNullOrEmpty(arrival))
+                {
+                    query = query.Where(t => t.ArrivalLocation.Contains(arrival));
+                }
 
-                // Your existing code
-                Trains = _context.Trains.Include(t => t.DepartureTimes).ToList();
+                if (departureTime.HasValue)
+                {
+                    query = query.Where(t => t.Monday == departureTime.Value ||
+                                             t.Tuesday == departureTime.Value ||
+                                             t.Wednesday == departureTime.Value ||
+                                             t.Thursday == departureTime.Value ||
+                                             t.Friday == departureTime.Value ||
+                                             t.Saturday == departureTime.Value ||
+                                             t.Sunday == departureTime.Value);
+                }
+
+                Trains = query.ToList();
             }
-            catch (JsonException ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deserializing JSON");
+                _logger.LogError(ex, "Error occurred while fetching train data");
                 throw;
             }
         }

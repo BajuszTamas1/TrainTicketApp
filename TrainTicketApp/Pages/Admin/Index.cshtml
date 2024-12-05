@@ -1,5 +1,5 @@
 @page
-@model AdminIndexModel
+@model TrainTicketApp.Pages.Admin.AdminIndexModel
 @{
     ViewData["Title"] = "Admin Felület";
 }
@@ -7,19 +7,19 @@
 <h1>Admin Felület</h1>
 
 <form method="post">
-    <input type="text" asp-for="DepartureLocation" placeholder="Indulási hely" required/>
-    <input type="text" asp-for="ArrivalLocation" placeholder="Érkezési hely" required/>
-    <input type="number" asp-for="Distance" placeholder="Táv" required/>
-    <input type="number" asp-for="Price" placeholder="Ár" required/>
-    <input type="text" asp-for="TravelTime" placeholder="Időtartam (hh:mm)" required/>
+    <input type="text" asp-for="DepartureLocation" placeholder="Indulási hely" required />
+    <input type="text" asp-for="ArrivalLocation" placeholder="Érkezési hely" required />
+    <input type="number" asp-for="Distance" placeholder="Táv" required />
+    <input type="number" asp-for="Price" placeholder="Ár" required />
+    <input type="text" asp-for="TravelTime" placeholder="Időtartam (hh:mm)" required />
 
     @foreach (var day in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
     {
         <h4>@day</h4>
-        <input type="text" name="DepartureTimes[@day][]" placeholder="Indulási idő (hh:mm)"/>
+        <input type="text" name="DepartureTimes[@day]" placeholder="Indulási idő (hh:mm)" />
     }
 
-    <input type="submit" value="Járat hozzáadása"/>
+    <input type="submit" value="Járat hozzáadása" />
 </form>
 
 @if (Model.TrainAdded)
@@ -47,13 +47,15 @@
             <td>@train.DepartureLocation</td>
             <td>@train.ArrivalLocation</td>
             <td>
-                @foreach (var departureTime in train.DepartureTimes.OrderBy(dt => dt.DayOfWeek).ThenBy(dt => dt.DepartureTime))
-                {
-                    <h4>@departureTime.DayOfWeek</h4>
-                    <ul>
-                        <li>@departureTime.DepartureTime.ToString(@"hh\:mm")</li>
-                    </ul>
-                }
+                <ul>
+                    <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
+                    <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
+                    <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
+                    <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
+                    <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
+                    <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
+                    <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
+                </ul>
             </td>
             <td>
                 <form method="post" asp-page-handler="Edit">
@@ -67,7 +69,7 @@
                     @foreach (var day in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
                     {
                         <h4>@day</h4>
-                        <input type="text" name="DepartureTimes[@day][]" value="@train.DepartureTimes.FirstOrDefault(dt => dt.DayOfWeek == day)?.DepartureTime.ToString(@"hh\:mm")" />
+                        <input type="text" name="DepartureTimes[@day]" value="@train.GetType().GetProperty(day.ToString()).GetValue(train)?" />
                     }
 
                     <input type="submit" value="Szerkesztés" />

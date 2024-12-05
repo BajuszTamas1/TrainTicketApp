@@ -17,7 +17,7 @@
                 {
                     @foreach (var departureTime in train.DepartureTimes.OrderBy(dt => dt.DayOfWeek).ThenBy(dt => dt.DepartureTime))
                     {
-                        <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation - @departureTime.DayOfWeek @departureTime.DepartureTime.ToString(@"hh\:mm")</option>
+                        <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation - @departureTime.DayOfWeek @departureTime.DepartureTime</option>
                     }
                 }
             }

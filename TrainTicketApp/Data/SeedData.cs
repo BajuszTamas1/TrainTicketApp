@@ -27,13 +27,13 @@ namespace TrainTicketApp.Data
                         Distance = 250,
                         Price = 29.99m,
                         TravelTime = "2:30",
-                        DepartureTimes = new List<TrainDepartureTime>
-                        {
-                            new TrainDepartureTime { DayOfWeek = DayOfWeek.Monday, DepartureTime = new TimeSpan(6, 0, 0) },
-                            new TrainDepartureTime { DayOfWeek = DayOfWeek.Monday, DepartureTime = new TimeSpan(14, 0, 0) },
-                            new TrainDepartureTime { DayOfWeek = DayOfWeek.Tuesday, DepartureTime = new TimeSpan(6, 0, 0) },
-                            new TrainDepartureTime { DayOfWeek = DayOfWeek.Tuesday, DepartureTime = new TimeSpan(14, 0, 0) }
-                        }
+                        Monday = new TimeSpan(6, 0, 0),
+                        Tuesday = new TimeSpan(6, 0, 0),
+                        Wednesday = new TimeSpan(0, 0, 0),
+                        Thursday = new TimeSpan(0, 0, 0),
+                        Friday = new TimeSpan(0, 0, 0),
+                        Saturday = new TimeSpan(0, 0, 0),
+                        Sunday = new TimeSpan(0, 0, 0)
                     },
                     new Train
                     {
@@ -42,13 +42,13 @@ namespace TrainTicketApp.Data
                         Distance = 525,
                         Price = 49.99m,
                         TravelTime = "6:30",
-                        DepartureTimes = new List<TrainDepartureTime>
-                        {
-                            new TrainDepartureTime { DayOfWeek = DayOfWeek.Wednesday, DepartureTime = new TimeSpan(7, 0, 0) },
-                            new TrainDepartureTime { DayOfWeek = DayOfWeek.Wednesday, DepartureTime = new TimeSpan(15, 0, 0) },
-                            new TrainDepartureTime { DayOfWeek = DayOfWeek.Thursday, DepartureTime = new TimeSpan(7, 0, 0) },
-                            new TrainDepartureTime { DayOfWeek = DayOfWeek.Thursday, DepartureTime = new TimeSpan(15, 0, 0) }
-                        }
+                        Monday = new TimeSpan(0, 0, 0),
+                        Tuesday = new TimeSpan(0, 0, 0),
+                        Wednesday = new TimeSpan(7, 0, 0),
+                        Thursday = new TimeSpan(7, 0, 0),
+                        Friday = new TimeSpan(0, 0, 0),
+                        Saturday = new TimeSpan(0, 0, 0),
+                        Sunday = new TimeSpan(0, 0, 0)
                     }
                 );
 
