@@ -10,4 +10,5 @@ public interface ITrainDepartureTimeService
     Task AddAsync(Train train);
     Task UpdateAsync(Train train);
     Task DeleteAsync(int id);
+    
 }
