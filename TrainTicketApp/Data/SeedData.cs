@@ -22,35 +22,43 @@ namespace TrainTicketApp.Data
                 context.Trains.AddRange(
                     new Train
                     {
-                        DepartureLocation = "Budapest",
-                        ArrivalLocation = "Vienna",
-                        Distance = 250,
-                        Price = 29.99m,
-                        TravelTime = "2:30",
+                        DepartureLocation = "City A",
+                        ArrivalLocation = "City B",
+                        Distance = 100,
+                        Price = 50,
+                        TravelTime = "2:00",
                         Monday = new TimeSpan(6, 0, 0),
-                        Tuesday = new TimeSpan(6, 0, 0),
-                        Wednesday = new TimeSpan(6, 0, 0),
-                        Thursday = new TimeSpan(6, 0, 0),
-                        Friday = new TimeSpan(6, 0, 0),
-                        Saturday = new TimeSpan(6, 0, 0),
-                        Sunday = new TimeSpan(6, 0, 0)
+                        Tuesday = new TimeSpan(7, 0, 0),
+                        Wednesday = new TimeSpan(8, 0, 0),
+                        Thursday = new TimeSpan(9, 0, 0),
+                        Friday = new TimeSpan(10, 0, 0),
+                        Saturday = new TimeSpan(11, 0, 0),
+                        Sunday = new TimeSpan(12, 0, 0)
                     },
                     new Train
                     {
-                        DepartureLocation = "Budapest",
-                        ArrivalLocation = "Prague",
-                        Distance = 525,
-                        Price = 49.99m,
-                        TravelTime = "6:30",
-                        Monday = new TimeSpan(7, 0, 0),
+                        DepartureLocation = "City C",
+                        ArrivalLocation = "City D",
+                        Distance = 200,
+                        Price = 100,
+                        TravelTime = "4:00",
+                        Monday = new TimeSpan(6, 0, 0),
                         Tuesday = new TimeSpan(7, 0, 0),
-                        Wednesday = new TimeSpan(7, 0, 0),
-                        Thursday = new TimeSpan(7, 0, 0),
-                        Friday = new TimeSpan(7, 0, 0),
-                        Saturday = new TimeSpan(7, 0, 0),
-                        Sunday = new TimeSpan(7, 0, 0)
+                        Wednesday = new TimeSpan(8, 0, 0),
+                        Thursday = new TimeSpan(9, 0, 0),
+                        Friday = new TimeSpan(10, 0, 0),
+                        Saturday = new TimeSpan(11, 0, 0),
+                        Sunday = new TimeSpan(12, 0, 0)
                     }
                 );
+
+                context.SaveChanges();
+
+                // Look for any orders.
+                if (context.Orders.Any())
+                {
+                    return;   // DB has been seeded
+                }
 
                 context.Orders.AddRange(
                     new Order
@@ -62,7 +70,9 @@ namespace TrainTicketApp.Data
                         UserPhone = "1234567890",
                         TicketType = "Normal",
                         OrderDate = DateTime.Now,
-                        Status = "Active"
+                        Status = "Active",
+                        DayOfWeek = "Monday",
+                        DepartureTime = new TimeSpan(6, 0, 0)
                     },
                     new Order
                     {
@@ -73,7 +83,9 @@ namespace TrainTicketApp.Data
                         UserPhone = "0987654321",
                         TicketType = "Supplementary",
                         OrderDate = DateTime.Now,
-                        Status = "Active"
+                        Status = "Active",
+                        DayOfWeek = "Tuesday",
+                        DepartureTime = new TimeSpan(7, 0, 0)
                     }
                 );
 

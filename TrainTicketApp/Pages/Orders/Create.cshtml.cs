@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrainTicketApp.Models;
 using TrainTicketApp.Data;
+using TrainTicketApp.Services;
 
 namespace TrainTicketApp.Pages.Orders
 {
@@ -19,12 +20,24 @@ namespace TrainTicketApp.Pages.Orders
             _context = context;
         }
 
+
         [BindProperty]
         public Order NewOrder { get; set; } = new Order();
         public IList<Train> AvailableTrains { get; set; } = new List<Train>();
 
         [BindProperty]
         public string SelectedDay { get; set; }
+
+        public int TrainId { get; set; }
+        public string UserName { get; set; }
+        public string UserAddress { get; set; }
+        public string UserEmail { get; set; }
+        public string UserPhone { get; set; }
+        public string TicketType { get; set; }
+        public string Status { get; set; } = "Active";
+        public DateTime OrderDate { get; set; } = DateTime.Now;  
+        public string DayOfWeek { get; set; }
+        public TimeSpan DepartureTime { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -34,64 +47,56 @@ namespace TrainTicketApp.Pages.Orders
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                AvailableTrains = await _context.Trains.ToListAsync();
-                return Page();
-            }
+
 
             var train = await _context.Trains.FindAsync(NewOrder.TrainId);
-            if (train == null)
-            {
-                ModelState.AddModelError(string.Empty, "Invalid train selection.");
-                AvailableTrains = await _context.Trains.ToListAsync();
-                return Page();
-            }
+
 
             // A nap és az indulási idő beállítása a kiválasztott nap alapján
             switch (SelectedDay)
             {
                 case "Hétfő":
-                    NewOrder.DayOfWeek = "Monday";
+                    NewOrder.DayOfWeek = "Hétfő";
                     NewOrder.DepartureTime = train.Monday;
-                    Console.WriteLine("Monday: " + train.Monday);
                     break;
                 case "Kedd":
-                    NewOrder.DayOfWeek = "Tuesday";
+                    NewOrder.DayOfWeek = "Kedd";
                     NewOrder.DepartureTime = train.Tuesday;
-                    Console.WriteLine("Tuesday: " + train.Tuesday);
                     break;
                 case "Szerda":
-                    NewOrder.DayOfWeek = "Wednesday";
+                    NewOrder.DayOfWeek = "Szerda";
                     NewOrder.DepartureTime = train.Wednesday;
                     break;
                 case "Csütörtök":
-                    NewOrder.DayOfWeek = "Thursday";
+                    NewOrder.DayOfWeek = "Csütörtök";
                     NewOrder.DepartureTime = train.Thursday;
                     break;
                 case "Péntek":
-                    NewOrder.DayOfWeek = "Friday";
+                    NewOrder.DayOfWeek = "Péntek";
                     NewOrder.DepartureTime = train.Friday;
                     break;
                 case "Szombat":
-                    NewOrder.DayOfWeek = "Saturday";
+                    NewOrder.DayOfWeek = "Szombat";
                     NewOrder.DepartureTime = train.Saturday;
                     break;
                 case "Vasárnap":
-                    NewOrder.DayOfWeek = "Sunday";
+                    NewOrder.DayOfWeek = "Vasárnap";
                     NewOrder.DepartureTime = train.Sunday;
                     break;
-                default:
-                    ModelState.AddModelError(string.Empty, "Invalid day selection.");
-                    AvailableTrains = await _context.Trains.ToListAsync();
-                    return Page();
             }
 
+
+            Console.WriteLine("Order: " + NewOrder);
+            foreach(var prop in NewOrder.GetType().GetProperties())
+            {
+                Console.WriteLine(prop.Name + ": " + prop.GetValue(NewOrder));
+            }
 
             _context.Orders.Add(NewOrder);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("OrderConfirmation", new { id = NewOrder.Id });
+
+            return RedirectToPage("./OrderConfirmation", new { id = NewOrder.Id });
         }
     }
 }

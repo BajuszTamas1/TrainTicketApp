@@ -44,6 +44,6 @@ public class TrainDepartureTimeService : ITrainDepartureTimeService
             _context.Trains.Remove(train);
             await _context.SaveChangesAsync();
         }
-        
+
     }
 }

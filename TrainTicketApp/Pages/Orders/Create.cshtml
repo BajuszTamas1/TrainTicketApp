@@ -8,8 +8,8 @@
 <h1>Új Rendelés Leadása</h1>
 <form method="post">
     <div class="form-group">
-        <label asp-for="NewOrder.TrainId">Válasszon vonatot:</label>
-        <select asp-for="NewOrder.TrainId" class="form-control" id="trainSelect" onchange="updateDayAndTimeOptions()">
+        <label asp-for="TrainId">Válasszon vonatot:</label>
+        <select asp-for="TrainId" class="form-control" id="trainSelect" onchange="updateDayAndTimeOptions()">
             <option value="">-- Válasszon vonatot --</option>
             @foreach (var train in Model.AvailableTrains)
             {
@@ -24,32 +24,32 @@
         </select>
     </div>
     <div class="form-group">
-        <label asp-for="NewOrder.UserName">Név</label>
-        <input asp-for="NewOrder.UserName" class="form-control" placeholder="Név" required />
+        <label asp-for="UserName">Név</label>
+        <input asp-for="UserName" class="form-control" placeholder="Név" required />
     </div>
     <div class="form-group">
-        <label asp-for="NewOrder.UserAddress">Cím</label>
-        <input asp-for="NewOrder.UserAddress" class="form-control" placeholder="Cím" required />
+        <label asp-for="UserAddress">Cím</label>
+        <input asp-for="UserAddress" class="form-control" placeholder="Cím" required />
     </div>
     <div class="form-group">
-        <label asp-for="NewOrder.UserEmail">E-mail</label>
-        <input asp-for="NewOrder.UserEmail" class="form-control" type="email" placeholder="Email" required />
+        <label asp-for="UserEmail">E-mail</label>
+        <input asp-for="UserEmail" class="form-control" type="email" placeholder="Email" required />
     </div>
     <div class="form-group">
-        <label asp-for="NewOrder.UserPhone">Telefonszám</label>
-        <input asp-for="NewOrder.UserPhone" class="form-control" type="tel" placeholder="Telefonszám (+36xxxxxxxxx)" required pattern="^\+?[1-9]\d{1,14}$" />
-        <span class="text-danger" asp-validation-for="NewOrder.UserPhone"></span>
+        <label asp-for="UserPhone">Telefonszám</label>
+        <input asp-for="UserPhone" class="form-control" type="tel" placeholder="Telefonszám (+36xxxxxxxxx)" required pattern="^\+?[1-9]\d{1,14}$" />
+        <span class="text-danger" asp-validation-for="UserPhone"></span>
     </div>
     <div class="form-group">
-        <label asp-for="NewOrder.TicketType">Jegytípus</label>
-        <select asp-for="NewOrder.TicketType" class="form-control">
+        <label asp-for="TicketType">Jegytípus</label>
+        <select asp-for="TicketType" class="form-control">
             <option value="Normal">Normál</option>
             <option value="Supplementary">Pótjegy</option>
             <option value="SeatReservation">Helyjegy</option>
         </select>
     </div>
-    <input type="hidden" asp-for="NewOrder.DayOfWeek" value="" />
-    <input type="hidden" asp-for="NewOrder.DepartureTime" />
+    <input type="hidden" asp-for="DayOfWeek" value="" />
+    <input type="hidden" asp-for="DepartureTime" />
     <div>
         <input type="submit" value="Rendelés Leadása" class="btn btn-primary" />
     </div>
@@ -70,31 +70,31 @@
 
                 if (selectedTrain) {
                     if (selectedTrain.Monday != "00:00:00") {
-                        dayAndTimeSelect.innerHTML += `<option asp-for="NewOrder.DayOfWeek" value="Hétfő">Hétfő ${selectedTrain.Monday.substring(0, 5)}</option>`;
+                        dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Hétfő">Hétfő ${selectedTrain.Monday.substring(0, 5)}</option>`;
                         console.log(selectedTrain.Monday);
                     }
                     if (selectedTrain.Tuesday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="NewOrder.DayOfWeek" value="Kedd">Kedd ${selectedTrain.Tuesday.substring(0, 5)}</option>`;
+                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Kedd">Kedd ${selectedTrain.Tuesday.substring(0, 5)}</option>`;
                         console.log(selectedTrain.Tuesday);
                     }
                     if (selectedTrain.Wednesday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="NewOrder.DayOfWeek" value="Szerda">Szerda ${selectedTrain.Wednesday.substring(0, 5)}</option>`;
+                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Szerda">Szerda ${selectedTrain.Wednesday.substring(0, 5)}</option>`;
                         console.log(selectedTrain.Wednesday);
                     }
                     if (selectedTrain.Thursday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="NewOrder.DayOfWeek" value="Csütörtök">Csütörtök ${selectedTrain.Thursday.substring(0, 5)}</option>`;
+                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Csütörtök">Csütörtök ${selectedTrain.Thursday.substring(0, 5)}</option>`;
                         console.log(selectedTrain.Thursday);
                     }
                     if (selectedTrain.Friday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="NewOrder.DayOfWeek" value="Péntek">Péntek ${selectedTrain.Friday.substring(0, 5)}</option>`;
+                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Péntek">Péntek ${selectedTrain.Friday.substring(0, 5)}</option>`;
                         console.log(selectedTrain.Friday);
                     }
                     if (selectedTrain.Saturday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="NewOrder.DayOfWeek" value="Szombat">Szombat ${selectedTrain.Saturday.substring(0, 5)}</option>`;
+                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Szombat">Szombat ${selectedTrain.Saturday.substring(0, 5)}</option>`;
                         console.log(selectedTrain.Saturday);
                     }
                     if (selectedTrain.Sunday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="NewOrder.DayOfWeek" value="Vasárnap">Vasárnap ${selectedTrain.Sunday.substring(0, 5)}</option>`;
+                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Vasárnap">Vasárnap ${selectedTrain.Sunday.substring(0, 5)}</option>`;
                         console.log(selectedTrain.Sunday);
                     }
 

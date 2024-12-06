@@ -40,9 +40,13 @@ button.accept-policy[b-22at0crmya] {
 }
 
 .footer[b-22at0crmya] {
-  position: absolute;
+  position:absolute;
   bottom: 0;
+  top: 100%;
   width: 100%;
-  white-space: nowrap;
   line-height: 60px;
+}
+
+input[b-22at0crmya]{
+  height:40px;
 }

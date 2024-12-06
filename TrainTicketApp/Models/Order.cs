@@ -19,7 +19,9 @@ namespace TrainTicketApp.Models
         public string TicketType { get; set; }
         public string Status { get; set; } = "Active";
         public DateTime OrderDate { get; set; } = DateTime.Now;  
+        [Required]
         public string DayOfWeek { get; set; }
+        [Required]
         public TimeSpan DepartureTime { get; set; }
     }
 }

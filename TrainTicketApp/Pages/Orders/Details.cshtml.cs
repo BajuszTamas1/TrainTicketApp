@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Linq;
 using TrainTicketApp.Models;
+using TrainTicketApp.Data;
 
 namespace TrainTicketApp.Pages.Orders
 {
@@ -16,10 +18,17 @@ namespace TrainTicketApp.Pages.Orders
 
         public Order Order { get; set; } = new Order(); // Initialize with a default value
         public Train Train { get; set; } = new Train(); // Initialize with a default value
+
         public void OnGet(int orderId)
         {
             Order = _context.Orders.FirstOrDefault(o => o.Id == orderId) ?? new Order(); // Set to a default value if not found
             Train = _context.Trains.FirstOrDefault(t => t.Id == Order.TrainId) ?? new Train(); // Set to a default value if not found
+
+            // Ensure DepartureTime is valid
+            if (Order.DepartureTime == TimeSpan.Zero)
+            {
+                Order.DepartureTime = TimeSpan.FromHours(0); // Set to a default value if invalid
+            }
         }
 
         public IActionResult OnPostCancel(int orderId)

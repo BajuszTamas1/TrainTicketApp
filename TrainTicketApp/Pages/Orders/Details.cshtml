@@ -8,10 +8,10 @@
 
 <form method="get">
     <input type="number" name="orderId" placeholder="Order ID" />
-    <input type="submit" value="View Order" />
+    <input type="submit" class="btn btn-secondary" value="View Order" />
 </form>
 
-@if (Model.Order != null && Model.Train != null)
+@if (Model.Order != null && Model.Train != null && Model.Order.Id != 0)
 {
     <div class="row">
         <div class="col-md-6">
@@ -32,44 +32,14 @@
             <p>Várható útidő: @Model.Train.TravelTime</p>
             <p>Ár: @Model.Train.Price Ft</p>
             <p>Távolság: @Model.Train.Distance km</p>
-            <p>Indulási időpontok:</p>
-            <ul>
-                @if (Model.Train.Monday != TimeSpan.Zero)
-                {
-                    <li>Hétfő: @Model.Train.Monday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.Train.Tuesday != TimeSpan.Zero)
-                {
-                    <li>Kedd: @Model.Train.Tuesday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.Train.Wednesday != TimeSpan.Zero)
-                {
-                    <li>Szerda: @Model.Train.Wednesday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.Train.Thursday != TimeSpan.Zero)
-                {
-                    <li>Csütörtök: @Model.Train.Thursday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.Train.Friday != TimeSpan.Zero)
-                {
-                    <li>Péntek: @Model.Train.Friday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.Train.Saturday != TimeSpan.Zero)
-                {
-                    <li>Szombat: @Model.Train.Saturday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.Train.Sunday != TimeSpan.Zero)
-                {
-                    <li>Vasárnap: @Model.Train.Sunday.ToString(@"hh\:mm")</li>
-                }
-            </ul>
+            <p>Indulási időpont: @Model.Order.DayOfWeek - @Model.Order.DepartureTime.ToString("hh\\:mm")</p>
         </div>
 
         @if (Model.Order.Status == "Active")
         {
             <form method="post" asp-page-handler="Cancel">
                 <input type="hidden" name="orderId" value="@Model.Order.Id" />
-                <input type="submit" value="Cancel Order" />
+                <input type="submit" class="btn btn-danger" value="Cancel Order" />
             </form>
         }
     </div>

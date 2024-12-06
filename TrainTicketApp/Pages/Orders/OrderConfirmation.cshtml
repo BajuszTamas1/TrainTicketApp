@@ -1,67 +1,17 @@
 @page "{id:int}"
 @model TrainTicketApp.Pages.Orders.OrderConfirmationModel
 @{
-    ViewData["Title"] = "Rendelés Visszaigazolása";
+    ViewData["Title"] = "Rendelés visszaigazolás";
 }
 
-<h1>Rendelés Visszaigazolása</h1>
-<br>
-@if (Model.OrderDetails != null && Model.TrainDetails != null)
+<h1>Rendelés visszaigazolás</h1>
+
+@if (Model.Order != null)
 {
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Rendelés részletei</h2>
-            <p>Rendelés azonosító: @Model.OrderDetails.Id</p>
-            <p>Felhasználó: @Model.OrderDetails.UserName</p>
-            <p>Cím: @Model.OrderDetails.UserAddress</p>
-            <p>Email: @Model.OrderDetails.UserEmail</p>
-            <p>Telefonszám: @Model.OrderDetails.UserPhone</p>
-            <p>Jegytípus: @Model.OrderDetails.TicketType</p>
-            <p>Rendelés dátuma: @Model.OrderDetails.OrderDate</p>
-            <p>Állapot: @Model.OrderDetails.Status</p>
-        </div>
-        <div class="col-md-6">
-            <h2>Vonat részletei</h2>
-            <p>Indulási hely: @Model.TrainDetails.DepartureLocation</p>
-            <p>Érkezési hely: @Model.TrainDetails.ArrivalLocation</p>
-            <p>Várható útidő: @Model.TrainDetails.TravelTime</p>
-            <p>Ár: @Model.TrainDetails.Price Ft</p>
-            <p>Távolság: @Model.TrainDetails.Distance km</p>
-            <p>Indulási időpontok:</p>
-            <ul>
-                @if (Model.TrainDetails.Monday != TimeSpan.Zero)
-                {
-                    <li>Hétfő: @Model.TrainDetails.Monday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.TrainDetails.Tuesday != TimeSpan.Zero)
-                {
-                    <li>Kedd: @Model.TrainDetails.Tuesday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.TrainDetails.Wednesday != TimeSpan.Zero)
-                {
-                    <li>Szerda: @Model.TrainDetails.Wednesday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.TrainDetails.Thursday != TimeSpan.Zero)
-                {
-                    <li>Csütörtök: @Model.TrainDetails.Thursday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.TrainDetails.Friday != TimeSpan.Zero)
-                {
-                    <li>Péntek: @Model.TrainDetails.Friday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.TrainDetails.Saturday != TimeSpan.Zero)
-                {
-                    <li>Szombat: @Model.TrainDetails.Saturday.ToString(@"hh\:mm")</li>
-                }
-                @if (Model.TrainDetails.Sunday != TimeSpan.Zero)
-                {
-                    <li>Vasárnap: @Model.TrainDetails.Sunday.ToString(@"hh\:mm")</li>
-                }
-            </ul>
-        </div>
-    </div>
+    <p>Sikeres rendelés leadás!</p>
+    <p>Rendelés azonosító: @Model.Order.Id</p>
 }
 else
 {
-    <p>Rendelés nem található.</p>
+    <p>Nem található rendelés a megadott azonosítóval.</p>
 }
