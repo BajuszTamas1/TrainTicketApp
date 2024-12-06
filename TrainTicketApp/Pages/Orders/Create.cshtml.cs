@@ -87,6 +87,7 @@ namespace TrainTicketApp.Pages.Orders
                     return Page();
             }
 
+
             _context.Orders.Add(NewOrder);
             await _context.SaveChangesAsync();
 
