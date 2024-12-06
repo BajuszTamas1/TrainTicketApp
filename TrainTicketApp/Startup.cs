@@ -18,7 +18,6 @@ public class Startup
     services.AddScoped<ITrainService, TrainService>();
     services.AddScoped<IOrderService, OrderService>();
     services.AddScoped<ITrainDepartureTimeService, TrainDepartureTimeService>();
-
     services.AddRazorPages();
 }
 
