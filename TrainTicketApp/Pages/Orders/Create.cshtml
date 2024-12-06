@@ -2,6 +2,8 @@
 @model TrainTicketApp.Pages.Orders.CreateOrderModel
 @{
     ViewData["Title"] = "Új Rendelés";
+    var selectedTrainId = Model.NewOrder.TrainId;
+    var selectedTrain = Model.AvailableTrains.FirstOrDefault(t => t.Id == selectedTrainId);
 }
 
 <h1>Új Rendelés Leadása</h1>
@@ -9,70 +11,90 @@
 <form method="post">
     <div class="form-group">
         <label asp-for="NewOrder.TrainId">Válasszon vonatot:</label>
-        <select asp-for="NewOrder.TrainId" class="form-control">
+        <select asp-for="NewOrder.TrainId" class="form-control" id="trainSelect" onchange="updateDayAndTimeOptions()">
             <option value="">-- Válasszon vonatot --</option>
             @foreach (var train in Model.AvailableTrains)
             {
-                if (train.Monday != TimeSpan.Zero)
+                <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="SelectedDay">Válasszon napot és indulási időt:</label>
+        <select asp-for="SelectedDay" class="form-control" id="dayAndTimeSelect">
+            <option value="">-- Válasszon napot és indulási időt --</option>
+            @if (selectedTrain != null)
+            {
+                @if (selectedTrain.Monday != TimeSpan.Zero)
                 {
-                    <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation (Hétfő @train.Monday.ToString(@"hh\:mm"))</option>
+                    <option value="Hétfő">Hétfő @selectedTrain.Monday.ToString(@"hh\:mm")</option>
                 }
-                if (train.Tuesday != TimeSpan.Zero)
+                @if (selectedTrain.Tuesday != TimeSpan.Zero)
                 {
-                    <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation (Kedd @train.Tuesday.ToString(@"hh\:mm"))</option>
+                    <option value="Kedd">Kedd @selectedTrain.Tuesday.ToString(@"hh\:mm")</option>
                 }
-                if (train.Wednesday != TimeSpan.Zero)
+                @if (selectedTrain.Wednesday != TimeSpan.Zero)
                 {
-                    <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation (Szerda @train.Wednesday.ToString(@"hh\:mm"))</option>
+                    <option value="Szerda">Szerda @selectedTrain.Wednesday.ToString(@"hh\:mm")</option>
                 }
-                if (train.Thursday != TimeSpan.Zero)
+                @if (selectedTrain.Thursday != TimeSpan.Zero)
                 {
-                    <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation (Csütörtök @train.Thursday.ToString(@"hh\:mm"))</option>
+                    <option value="Csütörtök">Csütörtök @selectedTrain.Thursday.ToString(@"hh\:mm")</option>
                 }
-                if (train.Friday != TimeSpan.Zero)
+                @if (selectedTrain.Friday != TimeSpan.Zero)
                 {
-                    <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation (Péntek @train.Friday.ToString(@"hh\:mm"))</option>
+                    <option value="Péntek">Péntek @selectedTrain.Friday.ToString(@"hh\:mm")</option>
                 }
-                if (train.Saturday != TimeSpan.Zero)
+                @if (selectedTrain.Saturday != TimeSpan.Zero)
                 {
-                    <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation (Szombat @train.Saturday.ToString(@"hh\:mm"))</option>
+                    <option value="Szombat">Szombat @selectedTrain.Saturday.ToString(@"hh\:mm")</option>
                 }
-                if (train.Sunday != TimeSpan.Zero)
+                @if (selectedTrain.Sunday != TimeSpan.Zero)
                 {
-                    <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation (Vasárnap @train.Sunday.ToString(@"hh\:mm"))</option>
+                    <option value="Vasárnap">Vasárnap @selectedTrain.Sunday.ToString(@"hh\:mm")</option>
                 }
             }
         </select>
     </div>
     <div class="form-group">
         <label asp-for="NewOrder.UserName">Név</label>
-        <input asp-for="NewOrder.UserName" class="form-control" />
-        <span asp-validation-for="NewOrder.UserName" class="text-danger"></span>
+        <input asp-for="NewOrder.UserName" class="form-control" placeholder="Név" required />
     </div>
     <div class="form-group">
         <label asp-for="NewOrder.UserAddress">Cím</label>
-        <input asp-for="NewOrder.UserAddress" class="form-control" />
-        <span asp-validation-for="NewOrder.UserAddress" class="text-danger"></span>
+        <input asp-for="NewOrder.UserAddress" class="form-control" placeholder="Cím" required />
     </div>
     <div class="form-group">
-        <label asp-for="NewOrder.UserEmail">Email</label>
-        <input asp-for="NewOrder.UserEmail" class="form-control" />
-        <span asp-validation-for="NewOrder.UserEmail" class="text-danger"></span>
+        <label asp-for="NewOrder.UserEmail">E-mail</label>
+        <input asp-for="NewOrder.UserEmail" class="form-control" type="email" placeholder="Email" required />
     </div>
     <div class="form-group">
         <label asp-for="NewOrder.UserPhone">Telefonszám</label>
-        <input asp-for="NewOrder.UserPhone" class="form-control" />
-        <span asp-validation-for="NewOrder.UserPhone" class="text-danger"></span>
+        <input asp-for="NewOrder.UserPhone" class="form-control" type="tel" placeholder="Telefonszám (+36xxxxxxxxx)" required pattern="^\+?[1-9]\d{1,14}$" />
+        <span class="text-danger" asp-validation-for="NewOrder.UserPhone"></span>
     </div>
     <div class="form-group">
-        <div>
-            <label asp-for="NewOrder.TicketType">Jegytípus</label>
-            <select asp-for="NewOrder.TicketType" class="form-control">
-                <option value="Normal">Normál</option>
-                <option value="Supplementary">Pótjegy</option>
-                <option value="SeatReservation">Helyjegy</option>
-            </select>
-        </div>
+        <label asp-for="NewOrder.TicketType">Jegytípus</label>
+        <select asp-for="NewOrder.TicketType" class="form-control">
+            <option value="Normal">Normál</option>
+            <option value="Supplementary">Pótjegy</option>
+            <option value="SeatReservation">Helyjegy</option>
+        </select>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <input type="hidden" asp-for="NewOrder.DayOfWeek" />
+    <input type="hidden" asp-for="NewOrder.DepartureTime" />
+    <div>
+        <input type="submit" value="Rendelés Leadása" class="btn btn-primary" />
+    </div>
 </form>
+
+@section Scripts
+{
+    <script>
+        function updateDayAndTimeOptions() {
+            var trainSelect = document.getElementById("trainSelect");
+            selectedTrainId = trainSelect.options[trainSelect.selectedIndex].value;
+            selectedTrain = @Json.Serialize(Model.AvailableTrains.FirstOrDefault(t => t.Id == selectedTrainId));
+        }
+    </script>
+}

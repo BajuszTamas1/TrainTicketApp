@@ -19,7 +19,9 @@
 {
     if (Model.Trains != null && Model.Trains.Any())
     {
+        <br />
         <h2>Eredmények:</h2>
+        <br />
         <ul>
     @foreach (var train in Model.Trains)
             {
@@ -33,7 +35,7 @@
 
                 if (hasService)
                 {
-                    <li>@train.DepartureLocation - @train.ArrivalLocation</li>
+                    <h4>@train.DepartureLocation - @train.ArrivalLocation</h4>
                     @if (train.Monday != TimeSpan.Zero)
                     {
                         <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
@@ -62,6 +64,7 @@
                     {
                         <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
                     }
+                    <br />
                 }
             }
         </ul>
