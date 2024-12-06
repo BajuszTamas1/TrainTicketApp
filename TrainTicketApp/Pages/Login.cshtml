@@ -1,24 +1,25 @@
 ﻿@page
 @model TrainTicketApp.Pages.LoginModel
 @{
-	ViewData["Title"] = "Login";
+    ViewData["Title"] = "Bejelentkezés";
 }
-<h2>@ViewData["Title"]</h2>
+
+<h1>@ViewData["Title"]</h1>
 
 <form method="post">
     <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="Username" class="form-control" required />
+        <label asp-for="Username">Felhasználónév</label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
     </div>
-
     <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="Password" class="form-control" required />
+        <label asp-for="Password">Jelszó</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-primary">Login</button>
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-            <div class="alert alert-danger">@Model.ErrorMessage</div>
-    }
+    <button type="submit" class="btn btn-primary">Bejelentkezés</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

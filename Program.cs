@@ -1,8 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using TrainTicketApp.Data;
-using TrainTicketApp.Services;
-using TrainTicketApp;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +7,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<ITrainService, TrainService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ITrainDepartureTimeService, TrainDepartureTimeService>();
 
 // Add session services
 builder.Services.AddDistributedMemoryCache();

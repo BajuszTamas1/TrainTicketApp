@@ -1,55 +1,51 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using TrainTicketApp.Data;
-using TrainTicketApp.Models;
+using System.Linq;
 using System.Threading.Tasks;
+using TrainTicketApp.Models;
+using TrainTicketApp.Data;
 
 namespace TrainTicketApp.Pages
 {
-	public class LoginModel : PageModel
-	{
-		private readonly ApplicationDbContext _context;
+    public class LoginModel : PageModel
+    {
+        private readonly ApplicationDbContext _context;
 
-		public LoginModel(ApplicationDbContext context)
-		{
-			_context = context;
-		}
+        public LoginModel(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-		[BindProperty]
-		public string Username { get; set; }
-		[BindProperty]
-		public string Password { get; set; }
-		public string ErrorMessage { get; set; }
+        [BindProperty]
+        public string Username { get; set; }
 
-		public void OnGet()
-		{
-			// A GET request does nothing, just loads the page
-		}
+        [BindProperty]
+        public string Password { get; set; }
 
-		public async Task<IActionResult> OnPostAsync()
-		{
-			if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
-			{
-				ErrorMessage = "Username and Password are required.";
-				return Page();
-			}
+        public void OnGet()
+        {
+        }
 
-			var user = await _context.Users
-				.FirstOrDefaultAsync(u => u.Username == Username);
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
-			if (user == null || !BCrypt.Net.BCrypt.Verify(Password, user.Password))
-			{
-				ErrorMessage = "Invalid username or password.";
-				return Page();
-			}
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == Username && u.Password == Password);
+            if (user != null)
+            {
+                HttpContext.Session.SetString("Username", user.Username);
+				Console.WriteLine($"Logged in user: {user.Username} ÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁ");
+                return RedirectToPage("Index");
+            }
 
-			// Set session variables
-			HttpContext.Session.SetString("Username", user.Username);
-			HttpContext.Session.SetString("Role", user.Role);
-
-			return RedirectToPage("Index");
-		}
-	}
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+			Console.WriteLine("Invalid login attempt.ÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁ");
+            return Page();
+        }
+    }
 }
