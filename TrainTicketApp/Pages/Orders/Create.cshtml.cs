@@ -54,10 +54,12 @@ namespace TrainTicketApp.Pages.Orders
                 case "Hétfő":
                     NewOrder.DayOfWeek = "Monday";
                     NewOrder.DepartureTime = train.Monday;
+                    Console.WriteLine("Monday: " + train.Monday);
                     break;
                 case "Kedd":
                     NewOrder.DayOfWeek = "Tuesday";
                     NewOrder.DepartureTime = train.Tuesday;
+                    Console.WriteLine("Tuesday: " + train.Tuesday);
                     break;
                 case "Szerda":
                     NewOrder.DayOfWeek = "Wednesday";
