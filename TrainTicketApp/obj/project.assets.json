@@ -3367,6 +3367,7 @@
       "packagesPath": "/Users/tamasbajusz/.nuget/packages/",
       "outputPath": "/Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/obj/",
       "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
         "/Users/tamasbajusz/.nuget/NuGet/NuGet.Config"
       ],

@@ -60,9 +60,67 @@ namespace TrainTicketApp.Pages.Admin
         public bool TrainAdded { get; set; }
         public IList<Train> Trains { get; set; } = new List<Train>();
 
-        public async Task OnGetAsync()
+        [BindProperty]
+        public DateTime? StartDate { get; set; }
+        [BindProperty]
+        public DateTime? EndDate { get; set; }
+        public List<DateTime> OrderDates { get; set; }
+        public List<int> OrderCounts { get; set; }
+        public List<string> TicketTypes { get; set; }
+        public List<int> TicketTypeCounts { get; set; }
+
+        public async Task OnGetAsync(DateTime? startDate, DateTime? endDate, string departureLocation, string arrivalLocation)
         {
             Trains = await _context.Trains.ToListAsync();
+
+            StartDate = startDate;
+            EndDate = endDate;
+            DepartureLocation = departureLocation;
+            ArrivalLocation = arrivalLocation;
+
+            var ordersQuery = _context.Orders.AsQueryable();
+
+            if (StartDate.HasValue)
+            {
+                ordersQuery = ordersQuery.Where(o => o.OrderDate >= StartDate.Value);
+            }
+
+            if (EndDate.HasValue)
+            {
+                ordersQuery = ordersQuery.Where(o => o.OrderDate <= EndDate.Value);
+            }
+
+            if (!string.IsNullOrEmpty(DepartureLocation))
+            {
+                ordersQuery = ordersQuery.Where(o => o.DepartureLocation == DepartureLocation);
+            }
+
+            if (!string.IsNullOrEmpty(ArrivalLocation))
+            {
+                ordersQuery = ordersQuery.Where(o => o.ArrivalLocation == ArrivalLocation);
+            }
+
+            var orders = await ordersQuery.ToListAsync();
+
+            OrderDates = orders
+                .GroupBy(o => o.OrderDate.Date)
+                .Select(g => g.Key)
+                .ToList();
+
+            OrderCounts = orders
+                .GroupBy(o => o.OrderDate.Date)
+                .Select(g => g.Count())
+                .ToList();
+
+            TicketTypes = orders
+                .GroupBy(o => o.TicketType)
+                .Select(g => g.Key)
+                .ToList();
+
+            TicketTypeCounts = orders
+                .GroupBy(o => o.TicketType)
+                .Select(g => g.Count())
+                .ToList();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -110,7 +168,7 @@ namespace TrainTicketApp.Pages.Admin
             await _context.SaveChangesAsync();
 
             TrainAdded = true;
-            await OnGetAsync(); // Refresh the list after adding a new train
+            await OnGetAsync(StartDate,EndDate,DepartureLocation,ArrivalLocation); // Refresh the list after adding a new train
             return RedirectToPage();
         }
 
@@ -158,7 +216,7 @@ namespace TrainTicketApp.Pages.Admin
                 await _context.SaveChangesAsync();
             }
 
-            await OnGetAsync(); // Refresh the list after editing a train
+            await OnGetAsync(StartDate,EndDate,DepartureLocation,ArrivalLocation); // Refresh the list after editing a train
             return RedirectToPage();
         }
 

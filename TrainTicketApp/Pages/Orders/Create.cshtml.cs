@@ -90,6 +90,8 @@ namespace TrainTicketApp.Pages.Orders
             {
                 Console.WriteLine(prop.Name + ": " + prop.GetValue(NewOrder));
             }
+            NewOrder.DepartureLocation = train.DepartureLocation;
+            NewOrder.ArrivalLocation = train.ArrivalLocation;
 
             if(TicketType == "Helyjegy" && train.AvailableSeats > 0){
                 train.AvailableSeats--;

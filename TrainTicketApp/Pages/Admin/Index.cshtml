@@ -276,12 +276,60 @@
                 }
             </tbody>
         </table>
+        <form method="get">
+    <div class="form-group">
+        <label for="startDate">Kezdő dátum</label>
+        <input type="date" id="startDate" name="startDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="endDate">Befejező dátum</label>
+        <input type="date" id="endDate" name="endDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="departureLocation">Indulási hely</label>
+        <input type="text" id="departureLocation" name="departureLocation" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="arrivalLocation">Érkezési hely</label>
+        <input type="text" id="arrivalLocation" name="arrivalLocation" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Szűrés</button>
+</form>
+    <br/>
+        <div class="d-flex flex-wrap">
+             <div class="chart">
+                <h2>Leadott rendelések száma</h2>
+                <canvas id="ordersChart"></canvas>
+            </div>
+            <div class="pieChart">
+                <h2>Jegytípusokra leadott rendelések száma</h2>
+                <canvas id="ticketTypesChart"></canvas>
+            </div>
+        </div>
     }
 }
 else
 {
     <div class="alert alert-danger">Az oldal megtekintéséhez be kell jelentkeznie!</div>
 }
+
+<style>
+    .pieChart {
+        width: 600px;
+        height: 300px;
+        margin-bottom:50px;
+    }
+    .chart{
+        width: 500px;
+        height: 300px;
+        margin-bottom:50px;
+    }
+    #ticketTypesChart {
+        width: 100%;
+        height: 100%;
+        margin-left:150px;
+    }
+</style>
 
 @section Scripts {
     <script>
@@ -333,5 +381,84 @@ else
             });
         });
 
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var ordersChartCtx = document.getElementById('ordersChart').getContext('2d');
+            var ordersChart = new Chart(ordersChartCtx, {
+                type: 'line',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(Model.OrderDates)),
+                    datasets: [{
+                        label: 'Leadott rendelések száma',
+                        data: @Html.Raw(Json.Serialize(Model.OrderCounts)),
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            var ticketTypesChartCtx = document.getElementById('ticketTypesChart').getContext('2d');
+            var ticketTypesChart = new Chart(ticketTypesChartCtx, {
+                type: 'pie',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(Model.TicketTypes)),
+                    datasets: [{
+                        label: 'Jegytípusokra leadott rendelések száma',
+                        data: @Html.Raw(Json.Serialize(Model.TicketTypeCounts)),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    var label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
     </script>
 }

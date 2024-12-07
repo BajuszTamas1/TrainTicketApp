@@ -23,5 +23,7 @@ namespace TrainTicketApp.Models
         public string DayOfWeek { get; set; }
         [Required]
         public TimeSpan DepartureTime { get; set; }
+        public string DepartureLocation { get; set; }
+        public string ArrivalLocation { get; set; }
     }
 }

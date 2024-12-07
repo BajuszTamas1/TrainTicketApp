@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TrainTicketApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8fea8bcceb296f5fa154353171b0ce1f066e8e8e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+83008d37a1ab287986f21640fc2a4cec8f0ca12a")]
 [assembly: System.Reflection.AssemblyProductAttribute("TrainTicketApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TrainTicketApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -22,7 +22,15 @@ namespace TrainTicketApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ArrivalLocation")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DepartureLocation")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

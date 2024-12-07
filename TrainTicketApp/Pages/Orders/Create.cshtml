@@ -19,7 +19,7 @@
                 <option value="">-- Válasszon vonatot --</option>
                 @foreach (var train in Model.AvailableTrains)
                 {
-                    <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation</option>
+                    <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation (@train.TicketType)</option>
                 }
             </select>
         </div>
