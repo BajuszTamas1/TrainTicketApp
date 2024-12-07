@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TrainTicketApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241207152228_TrainUpdate3")]
+    partial class TrainUpdate3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -99,9 +102,6 @@ namespace TrainTicketApp.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ReservationPrice")
-                        .HasColumnType("INTEGER");
-
                     b.Property<TimeSpan>("Saturday")
                         .HasColumnType("TEXT");
 
@@ -110,9 +110,6 @@ namespace TrainTicketApp.Migrations
 
                     b.Property<TimeSpan>("Sunday")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("SupplementaryPrice")
-                        .HasColumnType("INTEGER");
 
                     b.Property<TimeSpan>("Thursday")
                         .HasColumnType("TEXT");

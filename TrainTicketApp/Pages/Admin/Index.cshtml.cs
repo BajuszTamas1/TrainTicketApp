@@ -44,6 +44,18 @@ namespace TrainTicketApp.Pages.Admin
         public string Saturday { get; set; }
         [BindProperty]
         public string Sunday { get; set; }
+        [BindProperty]
+        public string TicketType { get; set; }
+        [BindProperty]
+        public int CarCount { get; set; }
+        [BindProperty]
+        public int SeatCount { get; set; }
+        public int AllSeats { get; set; }
+        public int AvailableSeats { get; set; }
+        [BindProperty]
+        public int ReservationPrice { get; set; }
+        [BindProperty]
+        public int SupplementaryPrice { get; set; }
 
         public bool TrainAdded { get; set; }
         public IList<Train> Trains { get; set; } = new List<Train>();
@@ -60,7 +72,6 @@ namespace TrainTicketApp.Pages.Admin
                 ModelState.AddModelError("TravelTime", "Invalid time format. Please use hh:mm or h:mm.");
                 return Page();
             }
-
             var train = new Train
             {
                 DepartureLocation = DepartureLocation,
@@ -74,7 +85,14 @@ namespace TrainTicketApp.Pages.Admin
                 Thursday = TimeSpan.TryParse(Thursday, out var thursday) ? thursday : TimeSpan.Zero,
                 Friday = TimeSpan.TryParse(Friday, out var friday) ? friday : TimeSpan.Zero,
                 Saturday = TimeSpan.TryParse(Saturday, out var saturday) ? saturday : TimeSpan.Zero,
-                Sunday = TimeSpan.TryParse(Sunday, out var sunday) ? sunday : TimeSpan.Zero
+                Sunday = TimeSpan.TryParse(Sunday, out var sunday) ? sunday : TimeSpan.Zero,
+                TicketType = TicketType,
+                CarCount = CarCount,
+                SeatCount = SeatCount,
+                AllSeats = CarCount * SeatCount,
+                AvailableSeats = CarCount * SeatCount,
+                ReservationPrice = ReservationPrice,
+                SupplementaryPrice = SupplementaryPrice
             };
 
             _context.Trains.Add(train);

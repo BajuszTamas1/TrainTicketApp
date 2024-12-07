@@ -1,6 +1,6 @@
 
 @{
-    var username = Context.Session.GetString("UserSession");
+    var username = HttpContext.Session.GetString("UserSession");
     Console.WriteLine(username);
 }
 

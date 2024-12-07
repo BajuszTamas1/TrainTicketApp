@@ -23,5 +23,12 @@ namespace TrainTicketApp.Models
         public TimeSpan Friday { get; set; }
         public TimeSpan Saturday { get; set; }
         public TimeSpan Sunday { get; set; }
+        public string TicketType { get; set; }
+        public int CarCount { get; set; }
+        public int SeatCount { get; set; }
+        public int AllSeats { get; set; }
+        public int AvailableSeats { get; set; }
+        public int ReservationPrice { get; set; }
+        public int SupplementaryPrice { get; set; }
     }
 }

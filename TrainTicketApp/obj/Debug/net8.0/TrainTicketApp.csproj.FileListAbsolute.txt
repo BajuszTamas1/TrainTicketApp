@@ -159,3 +159,4 @@
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/obj/Debug/net8.0/TrainTicketApp.genruntimeconfig.cache
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/obj/Debug/net8.0/ref/TrainTicketApp.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/BCrypt.Net-Next.dll
+/Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Newtonsoft.Json.dll

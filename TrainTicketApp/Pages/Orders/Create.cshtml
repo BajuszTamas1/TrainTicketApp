@@ -1,4 +1,5 @@
 @page
+@using Microsoft.EntityFrameworkCore
 @model TrainTicketApp.Pages.Orders.CreateOrderModel
 @{
     ViewData["Title"] = "Új Rendelés";
@@ -7,98 +8,131 @@
 
 <h1>Új Rendelés Leadása</h1>
 <form method="post">
-    <div class="form-group">
-        <label asp-for="TrainId">Válasszon vonatot:</label>
-        <select asp-for="TrainId" class="form-control" id="trainSelect" onchange="updateDayAndTimeOptions()">
-            <option value="">-- Válasszon vonatot --</option>
-            @foreach (var train in Model.AvailableTrains)
-            {
+    @if (HttpContext.Session.GetString("User") != null)
+    {
+        var userData = HttpContext.Session.GetString("User");
+        var user = Newtonsoft.Json.JsonConvert.DeserializeObject<TrainTicketApp.Models.User>(userData);
+
+        <div class="form-group">
+            <label asp-for="TrainId">Válasszon vonatot:</label>
+            <select asp-for="TrainId" class="form-control" id="trainSelect" onchange="updateDayAndTimeOptions()">
+                <option value="">-- Válasszon vonatot --</option>
+                @foreach (var train in Model.AvailableTrains)
+                {
                     <option value="@train.Id">@train.DepartureLocation - @train.ArrivalLocation</option>
-            }
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="SelectedDay">Válasszon napot és indulási időt:</label>
-        <select asp-for="SelectedDay" class="form-control" id="dayAndTimeSelect">
-            <option value="">-- Válasszon napot és indulási időt --</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label asp-for="UserName">Név</label>
-        <input asp-for="UserName" class="form-control" placeholder="Név" required />
-    </div>
-    <div class="form-group">
-        <label asp-for="UserAddress">Cím</label>
-        <input asp-for="UserAddress" class="form-control" placeholder="Cím" required />
-    </div>
-    <div class="form-group">
-        <label asp-for="UserEmail">E-mail</label>
-        <input asp-for="UserEmail" class="form-control" type="email" placeholder="Email" required />
-    </div>
-    <div class="form-group">
-        <label asp-for="UserPhone">Telefonszám</label>
-        <input asp-for="UserPhone" class="form-control" type="tel" placeholder="Telefonszám (+36xxxxxxxxx)" required pattern="^\+?[1-9]\d{1,14}$" />
-        <span class="text-danger" asp-validation-for="UserPhone"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="TicketType">Jegytípus</label>
-        <select asp-for="TicketType" class="form-control">
-            <option value="Normal">Normál</option>
-            <option value="Supplementary">Pótjegy</option>
-            <option value="SeatReservation">Helyjegy</option>
-        </select>
-    </div>
-    <input type="hidden" asp-for="DayOfWeek" value="" />
-    <input type="hidden" asp-for="DepartureTime" />
-    <div>
-        <input type="submit" value="Rendelés Leadása" class="btn btn-primary" />
-    </div>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="SelectedDay">Válasszon napot és indulási időt:</label>
+            <select asp-for="SelectedDay" class="form-control" id="dayAndTimeSelect">
+                <option value="">-- Válasszon napot és indulási időt --</option>
+            </select>
+        </div>
+        @if (user.Role == "User")
+        {
+            <div class="form-group">
+                <label asp-for="UserName">Név</label>
+                <input asp-for="UserName" class="form-control" placeholder="Név" value="@user.Name" required readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="UserAddress">Cím</label>
+                <input asp-for="UserAddress" class="form-control" placeholder="Cím" required value="@user.Address" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="UserEmail">E-mail</label>
+                <input asp-for="UserEmail" class="form-control" type="email" placeholder="Email" value="@user.Email" required readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="UserPhone">Telefonszám</label>
+                <input asp-for="UserPhone" class="form-control" type="tel" placeholder="Telefonszám (+36xxxxxxxxx)" value="@user.PhoneNumber" required readonly
+                    pattern="^\+?[1-9]\d{1,14}$" />
+                <span class="text-danger" asp-validation-for="UserPhone"></span>
+            </div>
+        }else{
+            <div class="form-group">
+                <label asp-for="UserName">Név</label>
+                <input asp-for="UserName" class="form-control" placeholder="Név" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="UserAddress">Cím</label>
+                <input asp-for="UserAddress" class="form-control" placeholder="Cím" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="UserEmail">E-mail</label>
+                <input asp-for="UserEmail" class="form-control" type="email" placeholder="Email" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="UserPhone">Telefonszám</label>
+                <input asp-for="UserPhone" class="form-control" type="tel" placeholder="Telefonszám (+36xxxxxxxxx)" required
+                    pattern="^\+?[1-9]\d{1,14}$" />
+                <span class="text-danger" asp-validation-for="UserPhone"></span>
+            </div>
+        }
+        <div class="form-group">
+            <label asp-for="TicketType">Jegytípus</label>
+            <select asp-for="TicketType" class="form-control">
+                <option value="Normal">Normál</option>
+                <option value="Supplementary">Pótjegy</option>
+                <option value="SeatReservation">Helyjegy</option>
+            </select>
+        </div>
+        <input type="hidden" asp-for="DayOfWeek" value="" />
+        <input type="hidden" asp-for="DepartureTime" />
+        <div>
+            <input type="submit" value="Rendelés Leadása" class="btn btn-primary" />
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">A rendelés leadásához be kell jelentkeznie!</div>
+    }
 </form>
 
 @section Scripts
 {
-        <script>
-            var availableTrains = @Html.Raw(availableTrainsJson);
+    <script>
+        var availableTrains = @Html.Raw(availableTrainsJson);
 
-            function updateDayAndTimeOptions() {
-                var trainSelect = document.getElementById("trainSelect");
-                var selectedTrainId = trainSelect.options[trainSelect.selectedIndex].value;
-                var selectedTrain = availableTrains.find(t => t.Id == selectedTrainId);
+        function updateDayAndTimeOptions() {
+            var trainSelect = document.getElementById("trainSelect");
+            var selectedTrainId = trainSelect.options[trainSelect.selectedIndex].value;
+            var selectedTrain = availableTrains.find(t => t.Id == selectedTrainId);
 
-                var dayAndTimeSelect = document.getElementById("dayAndTimeSelect");
-                dayAndTimeSelect.innerHTML = ""; // Clear existing options
+            var dayAndTimeSelect = document.getElementById("dayAndTimeSelect");
+            dayAndTimeSelect.innerHTML = ""; // Clear existing options
 
-                if (selectedTrain) {
-                    if (selectedTrain.Monday != "00:00:00") {
-                        dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Hétfő">Hétfő ${selectedTrain.Monday.substring(0, 5)}</option>`;
-                        console.log(selectedTrain.Monday);
-                    }
-                    if (selectedTrain.Tuesday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Kedd">Kedd ${selectedTrain.Tuesday.substring(0, 5)}</option>`;
-                        console.log(selectedTrain.Tuesday);
-                    }
-                    if (selectedTrain.Wednesday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Szerda">Szerda ${selectedTrain.Wednesday.substring(0, 5)}</option>`;
-                        console.log(selectedTrain.Wednesday);
-                    }
-                    if (selectedTrain.Thursday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Csütörtök">Csütörtök ${selectedTrain.Thursday.substring(0, 5)}</option>`;
-                        console.log(selectedTrain.Thursday);
-                    }
-                    if (selectedTrain.Friday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Péntek">Péntek ${selectedTrain.Friday.substring(0, 5)}</option>`;
-                        console.log(selectedTrain.Friday);
-                    }
-                    if (selectedTrain.Saturday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Szombat">Szombat ${selectedTrain.Saturday.substring(0, 5)}</option>`;
-                        console.log(selectedTrain.Saturday);
-                    }
-                    if (selectedTrain.Sunday != "00:00:00") {
-                            dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Vasárnap">Vasárnap ${selectedTrain.Sunday.substring(0, 5)}</option>`;
-                        console.log(selectedTrain.Sunday);
-                    }
-
+            if (selectedTrain) {
+                if (selectedTrain.Monday != "00:00:00") {
+                    dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Hétfő">Hétfő ${selectedTrain.Monday.substring(0, 5)}</option>`;
+                    console.log(selectedTrain.Monday);
                 }
+                if (selectedTrain.Tuesday != "00:00:00") {
+                    dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Kedd">Kedd ${selectedTrain.Tuesday.substring(0, 5)}</option>`;
+                    console.log(selectedTrain.Tuesday);
+                }
+                if (selectedTrain.Wednesday != "00:00:00") {
+                    dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Szerda">Szerda ${selectedTrain.Wednesday.substring(0, 5)}</option>`;
+                    console.log(selectedTrain.Wednesday);
+                }
+                if (selectedTrain.Thursday != "00:00:00") {
+                    dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Csütörtök">Csütörtök ${selectedTrain.Thursday.substring(0, 5)}</option>`;
+                    console.log(selectedTrain.Thursday);
+                }
+                if (selectedTrain.Friday != "00:00:00") {
+                    dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Péntek">Péntek ${selectedTrain.Friday.substring(0, 5)}</option>`;
+                    console.log(selectedTrain.Friday);
+                }
+                if (selectedTrain.Saturday != "00:00:00") {
+                    dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Szombat">Szombat ${selectedTrain.Saturday.substring(0, 5)}</option>`;
+                    console.log(selectedTrain.Saturday);
+                }
+                if (selectedTrain.Sunday != "00:00:00") {
+                    dayAndTimeSelect.innerHTML += `<option asp-for="DayOfWeek" value="Vasárnap">Vasárnap ${selectedTrain.Sunday.substring(0, 5)}</option>`;
+                    console.log(selectedTrain.Sunday);
+                }
+
             }
-        </script>
+        }
+    </script>
 }

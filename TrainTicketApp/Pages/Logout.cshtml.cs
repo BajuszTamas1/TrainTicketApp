@@ -6,10 +6,14 @@ namespace TrainTicketApp.Pages
 {
     public class LogoutModel : PageModel
     {
-        public IActionResult OnGet()
+        public void OnGet()
         {
-            HttpContext.Session.Remove("Username");  // Session törlése
-            return RedirectToPage("/Index");  // Vissza a fõoldalra
+        }
+        public async Task OnPost()
+        {
+            HttpContext.Session.Clear();  // Munkamenet tÃ¶rlÃ©se
+            Response.Redirect("/Index");
+            await Task.CompletedTask;
         }
     }
 }
