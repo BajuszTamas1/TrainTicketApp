@@ -33,6 +33,7 @@
             <p>Ár: @Model.Train.Price Ft</p>
             <p>Távolság: @Model.Train.Distance km</p>
             <p>Indulási időpont: @Model.Order.DayOfWeek - @Model.Order.DepartureTime.ToString("hh\\:mm")</p>
+            <p>Elérhető jegyek: @Model.Train.AvailableSeats db</p>
         </div>
 
         @if (Model.Order.Status == "Active")

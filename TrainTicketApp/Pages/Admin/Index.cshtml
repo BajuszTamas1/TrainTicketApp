@@ -53,10 +53,11 @@
         </div>
         <div class="p-2">
             <h4>Jegy típusa</h4>
-            <select style="height: 40px;" class="base" asp-for="TicketType" id="ticketType" onchange="toggleSeatInputs()" required>
+            <select style="height: 40px;" class="base" asp-for="TicketType" id="ticketType"
+                onchange="toggleSeatInputs()" required>
                 <option value="Normal">Normal</option>
-                <option value="Supplementary">Pótjegy</option>
-                <option value="SeatReservation">Helyjegy</option>
+                <option value="Pótjegy">Pótjegy</option>
+                <option value="Helyjegy">Helyjegy</option>
             </select>
         </div>
         <div id="seatInputs" style="display: none;">
@@ -135,7 +136,8 @@
     <tbody>
         @foreach (var train in Model.Trains)
                 {
-                    <tr>
+                    var ticket = @train.TicketType;
+                    <tr data-ticket-type="@train.TicketType">
                         <td>@train.DepartureLocation</td>
                         <td>@train.ArrivalLocation</td>
                         <td>
@@ -172,13 +174,60 @@
                         </td>
                         <td>
                             <form method="post" asp-page-handler="Edit">
-                                <input class="base" type="hidden" name="id" value="@train.Id" />
-                                <input class="base" type="text" name="DepartureLocation" value="@train.DepartureLocation"
-                                    required />
-                                <input class="base" type="text" name="ArrivalLocation" value="@train.ArrivalLocation" required />
-                                <input class="base" type="number" name="Distance" value="@train.Distance" required />
-                                <input class="base" type="number" name="Price" value="@train.Price" required />
-                                <input class="base" type="text" name="TravelTime" value="@train.TravelTime" required />
+                                <div class="form-group d-flex flex-wrap">
+                                    <div class="p-2">
+                                        <h4>Indulási hely</h4>
+                                        <input class="base" type="text" asp-for="DepartureLocation"
+                                            value="@train.DepartureLocation" />
+                                    </div>
+                                    <div class="p-2">
+                                        <h4>Érkezési hely</h4>
+                                        <input class="base" type="text" asp-for="ArrivalLocation" value="@train.ArrivalLocation" />
+                                    </div>
+                                    <div class="p-2">
+                                        <h4>Táv</h4>
+                                        <input class="base" type="number" asp-for="Distance" placeholder="Táv"
+                                            value="@train.Distance" />
+                                    </div>
+                                    <div class="p-2">
+                                        <h4>Ár</h4>
+                                        <input class="base" type="number" asp-for="Price" placeholder="Ár" value="@train.Price" />
+                                    </div>
+                                    <div class="p-2">
+                                        <h4>Időtartam</h4>
+                                        <input class="base" type="text" asp-for="TravelTime" placeholder="Időtartam (hh:mm)"
+                                            value="@train.TravelTime" />
+                                    </div>
+                                    <div class="p-2">
+                                        <h4>Jegy típusa</h4>
+                                        <input class="base" type="text" asp-for="TicketType" id="ticketType2" value="@ticket"
+                                            readonly>
+                                    </div>
+                                    <div id="seatInputs3" style="display: none;">
+                                        <div class="p-2">
+                                            <h4>Vagonok száma</h4>
+                                            <input class="base" type="number" asp-for="CarCount" placeholder="Vagonok száma"
+                                                value="@train.CarCount" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Helyek száma</h4>
+                                            <input class="base" type="number" asp-for="SeatCount" placeholder="Helyek száma"
+                                                value="@train.SeatCount" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Helyjegy ára</h4>
+                                            <input class="base" type="number" asp-for="ReservationPrice" placeholder="Helyjegy ára"
+                                                value="@train.ReservationPrice" />
+                                        </div>
+                                    </div>
+                                    <div id="seatInputs4" style="display: none;">
+                                        <div class="p-2">
+                                            <h4>Pótjegy ára</h4>
+                                            <input class="base" type="number" asp-for="SupplementaryPrice" placeholder="Pótjegy ára"
+                                                value="@train.SupplementaryPrice" />
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group d-flex flex-wrap">
                                     <div class="p-2">
                                         <h4>Hétfő</h4>
@@ -240,7 +289,7 @@ else
             var ticketType = document.getElementById("ticketType");
             var seatInputs = document.getElementById("seatInputs");
 
-            if (ticketType.value == "SeatReservation") {
+            if (ticketType.value == "Helyjegy") {
                 seatInputs.style.display = "block";
                 seatInputs.className = "form-group d-flex flex-wrap";
             } else {
@@ -248,8 +297,9 @@ else
                 seatInputs.className = "";
             }
 
+            var ticketType2 = document.getElementById("ticketType2");
             var seatInputs2 = document.getElementById("seatInputs2");
-            if (ticketType.value == "Supplementary") {
+            if (ticketType.value == "Pótjegy") {
                 seatInputs2.style.display = "block";
                 seatInputs2.className = "form-group d-flex flex-wrap";
             } else {
@@ -257,5 +307,31 @@ else
                 seatInputs2.className = "";
             }
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const rows = document.querySelectorAll("tr[data-ticket-type]");
+            rows.forEach(row => {
+                const ticketType = row.getAttribute("data-ticket-type");
+                const seatInputs3 = row.querySelector("#seatInputs3");
+                const seatInputs4 = row.querySelector("#seatInputs4");
+
+                if (ticketType === "Helyjegy") {
+                    seatInputs3.style.display = "block";
+                    seatInputs3.className = "form-group d-flex flex-wrap";
+                } else {
+                    seatInputs3.style.display = "none";
+                    seatInputs3.className = "";
+                }
+
+                if (ticketType === "Pótjegy") {
+                    seatInputs4.style.display = "block";
+                    seatInputs4.className = "form-group d-flex flex-wrap";
+                } else {
+                    seatInputs4.style.display = "none";
+                    seatInputs4.className = "";
+                }
+            });
+        });
+
     </script>
 }

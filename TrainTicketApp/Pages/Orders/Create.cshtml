@@ -15,7 +15,7 @@
 
         <div class="form-group">
             <label asp-for="TrainId">Válasszon vonatot:</label>
-            <select asp-for="TrainId" class="form-control" id="trainSelect" onchange="updateDayAndTimeOptions()">
+            <select asp-for="TrainId" class="form-control" id="trainSelect" onchange="updateDayAndTimeOptions(); setTicketType()">
                 <option value="">-- Válasszon vonatot --</option>
                 @foreach (var train in Model.AvailableTrains)
                 {
@@ -69,13 +69,9 @@
                 <span class="text-danger" asp-validation-for="UserPhone"></span>
             </div>
         }
-        <div class="form-group">
-            <label asp-for="TicketType">Jegytípus</label>
-            <select asp-for="TicketType" class="form-control">
-                <option value="Normal">Normál</option>
-                <option value="Supplementary">Pótjegy</option>
-                <option value="SeatReservation">Helyjegy</option>
-            </select>
+        <div class="form-group p-2">
+            <p asp-for="TicketType">Jegytípus</p>
+            <input type="text" asp-for="TicketType" id="ticketType" readonly>
         </div>
         <input type="hidden" asp-for="DayOfWeek" value="" />
         <input type="hidden" asp-for="DepartureTime" />
@@ -132,6 +128,26 @@
                     console.log(selectedTrain.Sunday);
                 }
 
+            }
+        }
+
+        function setTicketType() {
+            var trainSelect = document.getElementById("trainSelect");
+            var ticketTypeSelect = document.getElementById("ticketType");
+            var selectedTrainId = trainSelect.value;
+
+            // Clear existing options
+            ticketTypeSelect.value = "";
+
+            if (selectedTrainId) {
+                @foreach (var train in Model.AvailableTrains)
+                {
+                    <text>
+                    if (selectedTrainId == "@train.Id") {
+                        ticketTypeSelect.value = "@train.TicketType";
+                    }
+                    </text>
+                }
             }
         }
     </script>

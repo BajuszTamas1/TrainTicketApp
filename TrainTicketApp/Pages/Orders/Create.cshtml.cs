@@ -85,14 +85,18 @@ namespace TrainTicketApp.Pages.Orders
                     break;
             }
 
-
             Console.WriteLine("Order: " + NewOrder);
             foreach(var prop in NewOrder.GetType().GetProperties())
             {
                 Console.WriteLine(prop.Name + ": " + prop.GetValue(NewOrder));
             }
 
-            _context.Orders.Add(NewOrder);
+            if(TicketType == "Helyjegy" && train.AvailableSeats > 0){
+                train.AvailableSeats--;
+                _context.Orders.Add(NewOrder);
+            }else{
+                _context.Orders.Add(NewOrder);
+            }
             await _context.SaveChangesAsync();
 
 

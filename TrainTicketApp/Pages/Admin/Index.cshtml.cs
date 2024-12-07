@@ -92,8 +92,19 @@ namespace TrainTicketApp.Pages.Admin
                 AllSeats = CarCount * SeatCount,
                 AvailableSeats = CarCount * SeatCount,
                 ReservationPrice = ReservationPrice,
-                SupplementaryPrice = SupplementaryPrice
+                SupplementaryPrice = SupplementaryPrice,
             };
+            decimal totalPrice = Price;
+            if (TicketType == "Helyjegy")
+            {
+                totalPrice += ReservationPrice;
+            }
+            else if (TicketType == "Pótjegy")
+            {
+                totalPrice += SupplementaryPrice;
+            }
+
+            train.Price = totalPrice;
 
             _context.Trains.Add(train);
             await _context.SaveChangesAsync();
@@ -117,7 +128,6 @@ namespace TrainTicketApp.Pages.Admin
                 train.DepartureLocation = DepartureLocation;
                 train.ArrivalLocation = ArrivalLocation;
                 train.Distance = Distance;
-                train.Price = Price;
                 train.TravelTime = TravelTime; // Ensure TravelTime is set
                 train.Monday = TimeSpan.TryParse(Monday, out var monday) ? monday : TimeSpan.Zero;
                 train.Tuesday = TimeSpan.TryParse(Tuesday, out var tuesday) ? tuesday : TimeSpan.Zero;
@@ -126,6 +136,24 @@ namespace TrainTicketApp.Pages.Admin
                 train.Friday = TimeSpan.TryParse(Friday, out var friday) ? friday : TimeSpan.Zero;
                 train.Saturday = TimeSpan.TryParse(Saturday, out var saturday) ? saturday : TimeSpan.Zero;
                 train.Sunday = TimeSpan.TryParse(Sunday, out var sunday) ? sunday : TimeSpan.Zero;
+                train.TicketType = TicketType;
+                train.CarCount = CarCount;
+                train.SeatCount = SeatCount;
+                train.AllSeats = CarCount * SeatCount;
+                train.AvailableSeats = CarCount * SeatCount;
+                train.ReservationPrice = ReservationPrice;
+                train.SupplementaryPrice = SupplementaryPrice;
+                if (train.TicketType == "Helyjegy")
+                {
+                    train.Price = Price+ReservationPrice;
+                }else if(train.TicketType == "Pótjegy")
+                {
+                    train.Price = Price+SupplementaryPrice;
+                }else
+                {
+                    train.Price = Price;
+                }
+
 
                 await _context.SaveChangesAsync();
             }
