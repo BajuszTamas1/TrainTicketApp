@@ -22,20 +22,41 @@ namespace TrainTicketApp.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             var userData = HttpContext.Session.GetString("User");
-            User = Newtonsoft.Json.JsonConvert.DeserializeObject<TrainTicketApp.Models.User>(userData);
+            var user = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(userData);
+            User = await _context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
 
-            if (User == null)
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            var userData = HttpContext.Session.GetString("User");
+            var userSession = Newtonsoft.Json.JsonConvert.DeserializeObject<User>(userData);
+
+            var userInDb = await _context.Users.FirstOrDefaultAsync(u => u.Username == userSession.Username);
+            if (userInDb == null)
             {
                 return RedirectToPage("/Login");
             }
 
-            return Page();
+            userInDb.Email = User.Email;
+            userInDb.PhoneNumber = User.PhoneNumber;
+            userInDb.Address = User.Address;
+
+            if (!string.IsNullOrEmpty(User.Password))
+            {
+                string salt = BCrypt.Net.BCrypt.GenerateSalt();
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(User.Password, salt);
+                userInDb.Password = hashedPassword;
+            }
+            _context.Users.Update(userInDb);
+            await _context.SaveChangesAsync();
+            return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostDeleteAsync()
         {
             var userData = HttpContext.Session.GetString("User");
-            User = Newtonsoft.Json.JsonConvert.DeserializeObject<TrainTicketApp.Models.User>(userData);
             if (string.IsNullOrEmpty(userData))
             {
                 return RedirectToPage("/Login");

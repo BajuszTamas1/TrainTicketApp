@@ -181,6 +181,7 @@ namespace TrainTicketApp.Pages.Admin
             }
 
             var train = await _context.Trains.FindAsync(id);
+            Console.WriteLine("Train!!!!!!!!!!!!!!!!ÁÁÁÁÁÁÁÁÁÁÁÁÁÁ: " + train);
             if (train != null)
             {
                 train.DepartureLocation = DepartureLocation;

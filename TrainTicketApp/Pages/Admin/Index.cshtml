@@ -8,6 +8,7 @@
 <style>
     .form-control-inline {
         width: 200px;
+        margin-left: 10px;
     }
 
     .base {
@@ -15,6 +16,14 @@
         margin-left: 10px;
         width: 200px;
         margin-bottom: 10px;
+    }
+
+    h4{
+        margin-left: 10px;
+    }
+
+    .btn {
+        margin-left: 20px;
     }
 </style>
 
@@ -29,7 +38,13 @@
     }
     else
     {
-        <form method="post">
+        <select id="viewSelector" class="form-control" onchange="changeView()">
+    <option value="0">-- Válasszon --</option>
+    <option value="1">Járat hozzáadása</option>
+    <option value="2">Járatok módosítása</option>
+    <option value="3">Diagramok</option>
+</select>
+        <form method="post" id="hozzaad" style="display: none;">
     <div class="form-group d-flex flex-wrap">
         <div class="p-2">
             <h4>Indulási hely</h4>
@@ -84,31 +99,31 @@
     <div class="form-group d-flex flex-wrap">
         <div class="p-2">
             <h4>Hétfő</h4>
-            <input type="text" asp-for="Monday" placeholder="Indulási idő (hh:mm)" class="form-control" />
+            <input type="text" asp-for="Monday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
         </div>
         <div class="p-2">
             <h4>Kedd</h4>
-            <input type="text" asp-for="Tuesday" placeholder="Indulási idő (hh:mm)" class="form-control" />
+            <input type="text" asp-for="Tuesday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
         </div>
         <div class="p-2">
             <h4>Szerda</h4>
-            <input type="text" asp-for="Wednesday" placeholder="Indulási idő (hh:mm)" class="form-control" />
+            <input type="text" asp-for="Wednesday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
         </div>
         <div class="p-2">
             <h4>Csütörtök</h4>
-            <input type="text" asp-for="Thursday" placeholder="Indulási idő (hh:mm)" class="form-control" />
+            <input type="text" asp-for="Thursday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
         </div>
         <div class="p-2">
             <h4>Péntek</h4>
-            <input type="text" asp-for="Friday" placeholder="Indulási idő (hh:mm)" class="form-control" />
+            <input type="text" asp-for="Friday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
         </div>
         <div class="p-2">
             <h4>Szombat</h4>
-            <input type="text" asp-for="Saturday" placeholder="Indulási idő (hh:mm)" class="form-control" />
+            <input type="text" asp-for="Saturday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
         </div>
         <div class="p-2">
             <h4>Vasárnap</h4>
-            <input type="text" asp-for="Sunday" placeholder="Indulási idő (hh:mm)" class="form-control" />
+            <input type="text" asp-for="Sunday" placeholder="Indulási idő (hh:mm)" class="form-control-inline" />
         </div>
     </div>
 
@@ -122,190 +137,197 @@
 
         <br />
         <br />
-
-        <h2>Járatok listája</h2>
-        <table class="table">
-    <thead>
-        <tr>
-            <th>Indulási hely</th>
-            <th>Érkezési hely</th>
-            <th>Indulási idő</th>
-            <th>Műveletek</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var train in Model.Trains)
-                {
-                    var ticket = @train.TicketType;
-                    <tr data-ticket-type="@train.TicketType">
-                        <td>@train.DepartureLocation</td>
-                        <td>@train.ArrivalLocation</td>
-                        <td>
-                            <ul>
-                                @if (train.Monday != TimeSpan.Zero)
-                                {
-                                    <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
-                                }
-                                @if (train.Tuesday != TimeSpan.Zero)
-                                {
-                                    <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
-                                }
-                                @if (train.Wednesday != TimeSpan.Zero)
-                                {
-                                    <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
-                                }
-                                @if (train.Thursday != TimeSpan.Zero)
-                                {
-                                    <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
-                                }
-                                @if (train.Friday != TimeSpan.Zero)
-                                {
-                                    <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
-                                }
-                                @if (train.Saturday != TimeSpan.Zero)
-                                {
-                                    <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
-                                }
-                                @if (train.Sunday != TimeSpan.Zero)
-                                {
-                                    <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
-                                }
-                            </ul>
-                        </td>
-                        <td>
-                            <form method="post" asp-page-handler="Edit">
-                                <div class="form-group d-flex flex-wrap">
-                                    <div class="p-2">
-                                        <h4>Indulási hely</h4>
-                                        <input class="base" type="text" asp-for="DepartureLocation"
-                                            value="@train.DepartureLocation" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Érkezési hely</h4>
-                                        <input class="base" type="text" asp-for="ArrivalLocation" value="@train.ArrivalLocation" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Táv</h4>
-                                        <input class="base" type="number" asp-for="Distance" placeholder="Táv"
-                                            value="@train.Distance" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Ár</h4>
-                                        <input class="base" type="number" asp-for="Price" placeholder="Ár" value="@train.Price" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Időtartam</h4>
-                                        <input class="base" type="text" asp-for="TravelTime" placeholder="Időtartam (hh:mm)"
-                                            value="@train.TravelTime" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Jegy típusa</h4>
-                                        <input class="base" type="text" asp-for="TicketType" id="ticketType2" value="@ticket"
-                                            readonly>
-                                    </div>
-                                    <div id="seatInputs3" style="display: none;">
+        <div id="modosit" style="display: none;">
+    <h2>Járatok listája</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Indulási hely</th>
+                <th>Érkezési hely</th>
+                <th>Indulási idő</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var train in Model.Trains)
+                    {
+                        var ticket = @train.TicketType;
+                        var price = train.Price - train.ReservationPrice - train.SupplementaryPrice;
+                        <tr data-ticket-type="@train.TicketType">
+                            <td>@train.DepartureLocation</td>
+                            <td>@train.ArrivalLocation</td>
+                            <td>
+                                <ul>
+                                    @if (train.Monday != TimeSpan.Zero)
+                                    {
+                                        <li>Hétfő: @train.Monday.ToString(@"hh\:mm")</li>
+                                    }
+                                    @if (train.Tuesday != TimeSpan.Zero)
+                                    {
+                                        <li>Kedd: @train.Tuesday.ToString(@"hh\:mm")</li>
+                                    }
+                                    @if (train.Wednesday != TimeSpan.Zero)
+                                    {
+                                        <li>Szerda: @train.Wednesday.ToString(@"hh\:mm")</li>
+                                    }
+                                    @if (train.Thursday != TimeSpan.Zero)
+                                    {
+                                        <li>Csütörtök: @train.Thursday.ToString(@"hh\:mm")</li>
+                                    }
+                                    @if (train.Friday != TimeSpan.Zero)
+                                    {
+                                        <li>Péntek: @train.Friday.ToString(@"hh\:mm")</li>
+                                    }
+                                    @if (train.Saturday != TimeSpan.Zero)
+                                    {
+                                        <li>Szombat: @train.Saturday.ToString(@"hh\:mm")</li>
+                                    }
+                                    @if (train.Sunday != TimeSpan.Zero)
+                                    {
+                                        <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
+                                    }
+                                </ul>
+                            </td>
+                            <td>
+                                <form method="post" asp-page-handler="Edit">
+                                    <div class="form-group d-flex flex-wrap">
                                         <div class="p-2">
-                                            <h4>Vagonok száma</h4>
-                                            <input class="base" type="number" asp-for="CarCount" placeholder="Vagonok száma"
-                                                value="@train.CarCount" />
+                                            <h4>Indulási hely</h4>
+                                            <input class="base" type="text" asp-for="DepartureLocation"
+                                                value="@train.DepartureLocation" />
                                         </div>
                                         <div class="p-2">
-                                            <h4>Helyek száma</h4>
-                                            <input class="base" type="number" asp-for="SeatCount" placeholder="Helyek száma"
-                                                value="@train.SeatCount" />
+                                            <h4>Érkezési hely</h4>
+                                            <input class="base" type="text" asp-for="ArrivalLocation"
+                                                value="@train.ArrivalLocation" />
                                         </div>
                                         <div class="p-2">
-                                            <h4>Helyjegy ára</h4>
-                                            <input class="base" type="number" asp-for="ReservationPrice" placeholder="Helyjegy ára"
-                                                value="@train.ReservationPrice" />
+                                            <h4>Táv</h4>
+                                            <input class="base" type="number" asp-for="Distance" placeholder="Táv"
+                                                value="@train.Distance" />
                                         </div>
-                                    </div>
-                                    <div id="seatInputs4" style="display: none;">
                                         <div class="p-2">
-                                            <h4>Pótjegy ára</h4>
-                                            <input class="base" type="number" asp-for="SupplementaryPrice" placeholder="Pótjegy ára"
-                                                value="@train.SupplementaryPrice" />
+                                            <h4>Ár</h4>
+                                            <input class="base" type="number" asp-for="Price" placeholder="Ár" value="@price" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Időtartam</h4>
+                                            <input class="base" type="text" asp-for="TravelTime" placeholder="Időtartam (hh:mm)"
+                                                value="@train.TravelTime" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Jegy típusa</h4>
+                                            <input class="base" type="text" asp-for="TicketType" id="ticketType2" value="@ticket"
+                                                readonly>
+                                        </div>
+                                        <div id="seatInputs3" style="display: none;">
+                                            <div class="p-2">
+                                                <h4>Vagonok száma</h4>
+                                                <input class="base" type="number" asp-for="CarCount" placeholder="Vagonok száma"
+                                                    value="@train.CarCount" />
+                                            </div>
+                                            <div class="p-2">
+                                                <h4>Helyek száma</h4>
+                                                <input class="base" type="number" asp-for="SeatCount" placeholder="Helyek száma"
+                                                    value="@train.SeatCount" />
+                                            </div>
+                                            <div class="p-2">
+                                                <h4>Helyjegy ára</h4>
+                                                <input class="base" type="number" asp-for="ReservationPrice"
+                                                    placeholder="Helyjegy ára" value="@train.ReservationPrice" />
+                                            </div>
+                                        </div>
+                                        <div id="seatInputs4" style="display: none;">
+                                            <div class="p-2">
+                                                <h4>Pótjegy ára</h4>
+                                                <input class="base" type="number" asp-for="SupplementaryPrice"
+                                                    placeholder="Pótjegy ára" value="@train.SupplementaryPrice" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group d-flex flex-wrap">
-                                    <div class="p-2">
-                                        <h4>Hétfő</h4>
-                                        <input type="text" name="Monday" value="@train.Monday.ToString(@"hh\:mm")"
-                                            class="form-control-inline" />
+                                    <div class="form-group d-flex flex-wrap">
+                                        <div class="p-2">
+                                            <h4>Hétfő</h4>
+                                            <input type="text" name="Monday" value="@train.Monday.ToString(@"hh\:mm")"
+                                                class="form-control-inline" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Kedd</h4>
+                                            <input type="text" name="Tuesday" value="@train.Tuesday.ToString(@"hh\:mm")"
+                                                class="form-control-inline" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Szerda</h4>
+                                            <input type="text" name="Wednesday" value="@train.Wednesday.ToString(@"hh\:mm")"
+                                                class="form-control-inline" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Csütörtök</h4>
+                                            <input type="text" name="Thursday" value="@train.Thursday.ToString(@"hh\:mm")"
+                                                class="form-control-inline" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Péntek</h4>
+                                            <input type="text" name="Friday" value="@train.Friday.ToString(@"hh\:mm")"
+                                                class="form-control-inline" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Szombat</h4>
+                                            <input type="text" name="Saturday" value="@train.Saturday.ToString(@"hh\:mm")"
+                                                class="form-control-inline" />
+                                        </div>
+                                        <div class="p-2">
+                                            <h4>Vasárnap</h4>
+                                            <input type="text" name="Sunday" value="@train.Sunday.ToString(@"hh\:mm")"
+                                                class="form-control-inline" />
+                                        </div>
                                     </div>
-                                    <div class="p-2">
-                                        <h4>Kedd</h4>
-                                        <input type="text" name="Tuesday" value="@train.Tuesday.ToString(@"hh\:mm")"
-                                            class="form-control-inline" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Szerda</h4>
-                                        <input type="text" name="Wednesday" value="@train.Wednesday.ToString(@"hh\:mm")"
-                                            class="form-control-inline" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Csütörtök</h4>
-                                        <input type="text" name="Thursday" value="@train.Thursday.ToString(@"hh\:mm")"
-                                            class="form-control-inline" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Péntek</h4>
-                                        <input type="text" name="Friday" value="@train.Friday.ToString(@"hh\:mm")"
-                                            class="form-control-inline" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Szombat</h4>
-                                        <input type="text" name="Saturday" value="@train.Saturday.ToString(@"hh\:mm")"
-                                            class="form-control-inline" />
-                                    </div>
-                                    <div class="p-2">
-                                        <h4>Vasárnap</h4>
-                                        <input type="text" name="Sunday" value="@train.Sunday.ToString(@"hh\:mm")"
-                                            class="form-control-inline" />
-                                    </div>
-                                </div>
-                                <input type="submit" value="Szerkesztés" class="btn btn-primary" />
-                            </form>
-                            <form method="post" asp-page-handler="Delete">
-                                <input type="hidden" name="id" value="@train.Id" />
-                                <input type="submit" value="Törlés" class="btn btn-danger" />
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <form method="get">
-    <div class="form-group">
-        <label for="startDate">Kezdő dátum</label>
-        <input type="date" id="startDate" name="startDate" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="endDate">Befejező dátum</label>
-        <input type="date" id="endDate" name="endDate" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="departureLocation">Indulási hely</label>
-        <input type="text" id="departureLocation" name="departureLocation" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="arrivalLocation">Érkezési hely</label>
-        <input type="text" id="arrivalLocation" name="arrivalLocation" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Szűrés</button>
-</form>
-    <br/>
-        <div class="d-flex flex-wrap">
-             <div class="chart">
-                <h2>Leadott rendelések száma</h2>
-                <canvas id="ordersChart"></canvas>
-            </div>
-            <div class="pieChart">
-                <h2>Jegytípusokra leadott rendelések száma</h2>
-                <canvas id="ticketTypesChart"></canvas>
-            </div>
+                                    <input type="hidden" name="id" value="@train.Id">
+                                    <input style="float: left; margin-right: 10px;" type="submit" value="Szerkesztés"
+                                        class="btn btn-primary" />
+                                </form>
+                                <form method="post" asp-page-handler="Delete">
+                                    <input type="hidden" name="id" value="@train.Id" />
+                                    <input style="float: left;" type="submit" value="Törlés" class="btn btn-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
+        <div id="diag" style="display: none;">
+    <form method="get">
+        <div class="form-group">
+            <label for="startDate">Kezdő dátum</label>
+            <input type="date" id="startDate" name="startDate" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="endDate">Befejező dátum</label>
+            <input type="date" id="endDate" name="endDate" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="departureLocation">Indulási hely</label>
+            <input type="text" id="departureLocation" name="departureLocation" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="arrivalLocation">Érkezési hely</label>
+            <input type="text" id="arrivalLocation" name="arrivalLocation" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Szűrés</button>
+    </form>
+    <br />
+    <div class="d-flex flex-wrap">
+        <div class="chart">
+            <h2>Leadott rendelések száma</h2>
+            <canvas id="ordersChart"></canvas>
+        </div>
+        <div class="pieChart">
+            <h2>Jegytípusokra leadott rendelések száma</h2>
+            <canvas id="ticketTypesChart"></canvas>
+        </div>
+    </div>
+</div>
     }
 }
 else
@@ -317,17 +339,19 @@ else
     .pieChart {
         width: 600px;
         height: 300px;
-        margin-bottom:50px;
+        margin-bottom: 50px;
     }
-    .chart{
+
+    .chart {
         width: 500px;
         height: 300px;
-        margin-bottom:50px;
+        margin-bottom: 50px;
     }
+
     #ticketTypesChart {
         width: 100%;
         height: 100%;
-        margin-left:150px;
+        margin-left: 150px;
     }
 </style>
 
@@ -380,6 +404,27 @@ else
                 }
             });
         });
+
+        function changeView() {
+            var viewSelector = document.getElementById("viewSelector");
+            var hozzaad = document.getElementById("hozzaad");
+            var modosit = document.getElementById("modosit");
+            var diag = document.getElementById("diag");
+
+            if (viewSelector.value == "1") {
+                hozzaad.style.display = "block";
+                modosit.style.display = "none";
+                diag.style.display = "none";
+            } else if (viewSelector.value == "2") {
+                hozzaad.style.display = "none";
+                modosit.style.display = "block";
+                diag.style.display = "none";
+            } else {
+                hozzaad.style.display = "none";
+                modosit.style.display = "none";
+                diag.style.display = "block";
+            }
+        }
 
     </script>
 
