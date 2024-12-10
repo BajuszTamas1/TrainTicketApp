@@ -1,0 +1,39 @@
+@page
+@model TrainTicketApp.Pages.ProfileModel
+@{
+    ViewData["Title"] = "Profil";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.User != null)
+{
+    <div class="form-group">
+        <label>Felhasználónév</label>
+        <input class="form-control" value="@Model.User.Username" readonly />
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input class="form-control" value="@Model.User.Email" readonly />
+    </div>
+    <div class="form-group">
+        <label>Telefonszám</label>
+        <input class="form-control" value="@Model.User.PhoneNumber" readonly />
+    </div>
+    <div class="form-group">
+        <label>Cím</label>
+        <input class="form-control" value="@Model.User.Address" readonly />
+    </div>
+    <div class="form-group">
+        <label>Jelszó</label>
+        <input class="form-control" value="********" readonly />
+    </div>
+
+    <form method="post" asp-page-handler="Delete">
+        <button type="submit" class="btn btn-danger">Profil törlése</button>
+    </form>
+}
+else
+{
+    <div class="alert alert-danger">Nincs bejelentkezett felhasználó.</div>
+}

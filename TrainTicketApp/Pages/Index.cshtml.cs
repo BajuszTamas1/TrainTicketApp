@@ -21,18 +21,11 @@ namespace TrainTicketApp.Pages
         }
 
         public IList<Train> Trains { get; set; } = new List<Train>();
+        public User User { get; set; }
+
 
         public void OnGet(string departure, string arrival, TimeSpan? departureTime)
         {
-            var username = HttpContext.Session.GetString("Username");
-            if (!string.IsNullOrEmpty(username))
-            {
-                Console.WriteLine($"Bejelentkezett felhasználó: {username}");
-            }
-            else
-            {
-                Console.WriteLine("Nincs bejelentkezett felhasználó.");
-            }
             try
             {
                 var query = _context.Trains.AsQueryable();
