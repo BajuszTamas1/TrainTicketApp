@@ -201,7 +201,14 @@ namespace TrainTicketApp.Pages.Admin
                 train.CarCount = CarCount;
                 train.SeatCount = SeatCount;
                 train.AllSeats = CarCount * SeatCount;
-                train.AvailableSeats = CarCount * SeatCount;
+                train.AvailableSeats = AllSeats;
+                train.AvailableSeatsMonday = AllSeats;
+                train.AvailableSeatsTuesday = AllSeats;
+                train.AvailableSeatsWednesday = AllSeats;
+                train.AvailableSeatsThursday = AllSeats;
+                train.AvailableSeatsFriday = AllSeats;
+                train.AvailableSeatsSaturday = AllSeats;
+                train.AvailableSeatsSunday = AllSeats;
                 train.ReservationPrice = ReservationPrice;
                 train.SupplementaryPrice = SupplementaryPrice;
                 if (train.TicketType == "Helyjegy")
@@ -241,6 +248,19 @@ namespace TrainTicketApp.Pages.Admin
             if (user != null)
             {
                 _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostChangeUserRoleAsync(int id, string role)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user != null)
+            {
+                user.Role = role;
+                _context.Users.Update(user);
                 await _context.SaveChangesAsync();
             }
 

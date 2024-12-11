@@ -33,7 +33,28 @@
             <p>Ár: @Model.Train.Price Ft</p>
             <p>Távolság: @Model.Train.Distance km</p>
             <p>Indulási időpont: @Model.Order.DayOfWeek - @Model.Order.DepartureTime.ToString("hh\\:mm")</p>
-            <p>Elérhető jegyek: @Model.Train.AvailableSeats db</p>
+            @if(Model.Order.DayOfWeek == "Hétfő")
+            {
+                <p>Elérhető jegyek: @Model.Train.AvailableSeatsMonday db</p>
+            }else if(Model.Order.DayOfWeek == "Kedd")
+            {
+                <p>Elérhető jegyek: @Model.Train.AvailableSeatsTuesday db</p>
+            }else if(Model.Order.DayOfWeek == "Szerda")
+            {
+                <p>Elérhető jegyek: @Model.Train.AvailableSeatsWednesday db</p>
+            }else if(Model.Order.DayOfWeek == "Csütörtök")
+            {
+                <p>Elérhető jegyek: @Model.Train.AvailableSeatsThursday db</p>
+            }else if(Model.Order.DayOfWeek == "Péntek")
+            {
+                <p>Elérhető jegyek: @Model.Train.AvailableSeatsFriday db</p>
+            }else if(Model.Order.DayOfWeek == "Szombat")
+            {
+                <p>Elérhető jegyek: @Model.Train.AvailableSeatsSaturday db</p>
+            }else if(Model.Order.DayOfWeek == "Vasárnap")
+            {
+                <p>Elérhető jegyek: @Model.Train.AvailableSeatsSunday db</p>
+            }
         </div>
 
         @if (Model.Order.Status == "Active")

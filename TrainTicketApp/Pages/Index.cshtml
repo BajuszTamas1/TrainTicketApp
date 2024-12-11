@@ -48,6 +48,36 @@
                         if (hasService)
                         {
                             <li>@train.DepartureLocation - @train.ArrivalLocation</li>
+                            <ul>
+                                @if(@train.Monday != TimeSpan.Zero)
+                                {
+                                    <li>Hétfő: @train.Monday</li>
+                                }
+                                @if(@train.Tuesday != TimeSpan.Zero)
+                                {
+                                    <li>Kedd: @train.Tuesday</li>
+                                }
+                                @if(@train.Wednesday != TimeSpan.Zero)
+                                {
+                                    <li>Szerda: @train.Wednesday</li>
+                                }
+                                @if(@train.Thursday != TimeSpan.Zero)
+                                {
+                                    <li>Csütörtök: @train.Thursday</li>
+                                }
+                                @if(@train.Friday != TimeSpan.Zero)
+                                {
+                                    <li>Péntek: @train.Friday</li>
+                                }
+                                @if(@train.Saturday != TimeSpan.Zero)
+                                {
+                                    <li>Szombat: @train.Saturday</li>
+                                }
+                                @if(@train.Sunday != TimeSpan.Zero)
+                                {
+                                    <li>Vasárnap: @train.Sunday</li>
+                                }
+                            </ul>
                         }
                     }
                 </ul>

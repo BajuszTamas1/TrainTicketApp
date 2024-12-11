@@ -338,6 +338,7 @@
                 <th>Email</th>
                 <th>Telefonszám</th>
                 <th>Cím</th>
+                <th>Jogosultság</th>
                 <th>Műveletek</th>
             </tr>
         </thead>
@@ -349,6 +350,14 @@
                             <td>@user1.Email</td>
                             <td>@user1.PhoneNumber</td>
                             <td>@user1.Address</td>
+                            <td>
+                                <form method="post" asp-page-handler="ChangeUserRole" asp-route-id="@user1.Id">
+                                    <select name="Role" class="form-control" onchange="this.form.submit()">
+                                        <option value="User" selected="@(user1.Role == "User" ? "selected" : null)">User</option>
+                                        <option value="Admin" selected="@(user1.Role == "Admin" ? "selected" : null)">Admin</option>
+                                    </select>
+                                </form>
+                            </td>
                             <td>
                                 <form method="post" asp-page-handler="DeleteUserById" asp-route-id="@user1.Id">
                                     <button type="submit" class="btn btn-danger">Törlés</button>
@@ -441,19 +450,23 @@ else
             var hozzaad = document.getElementById("hozzaad");
             var modosit = document.getElementById("modosit");
             var diag = document.getElementById("diag");
+            var felhasznalok = document.getElementById("felhasznalok");
 
             if (viewSelector.value == "1") {
                 hozzaad.style.display = "block";
                 modosit.style.display = "none";
                 diag.style.display = "none";
+                felhasznalok.style.display = "none";
             } else if (viewSelector.value == "2") {
                 hozzaad.style.display = "none";
                 modosit.style.display = "block";
                 diag.style.display = "none";
+                felhasznalok.style.display = "none";
             } else if (viewSelector.value == "3") {
                 hozzaad.style.display = "none";
                 modosit.style.display = "none";
                 diag.style.display = "block";
+                felhasznalok.style.display = "none";
             } else if(viewSelector.value == "4") {
                 hozzaad.style.display = "none";
                 modosit.style.display = "none";

@@ -1,4 +1,3 @@
-// TrainTicketApp/Models/Order.cs
 using System.ComponentModel.DataAnnotations;
 
 namespace TrainTicketApp.Models

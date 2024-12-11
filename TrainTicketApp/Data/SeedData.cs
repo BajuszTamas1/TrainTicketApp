@@ -13,10 +13,9 @@ namespace TrainTicketApp.Data
             using (var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
-                // Look for any trains.
                 if (context.Trains.Any())
                 {
-                    return;   // DB has been seeded
+                    return;
                 }
 
                 context.Trains.AddRange(
@@ -34,7 +33,20 @@ namespace TrainTicketApp.Data
                         Thursday = new TimeSpan(9, 0, 0),
                         Friday = new TimeSpan(10, 0, 0),
                         Saturday = new TimeSpan(11, 0, 0),
-                        Sunday = new TimeSpan(12, 0, 0)
+                        Sunday = new TimeSpan(12, 0, 0),
+                        CarCount = 1,
+                        SeatCount = 50,
+                        AllSeats = 50,
+                        AvailableSeats = 50,
+                        ReservationPrice = 10,
+                        SupplementaryPrice = 5,
+                        AvailableSeatsMonday = 50,
+                        AvailableSeatsTuesday = 50,
+                        AvailableSeatsWednesday = 50,
+                        AvailableSeatsThursday = 50,
+                        AvailableSeatsFriday = 50,
+                        AvailableSeatsSaturday = 50,
+                        AvailableSeatsSunday = 50
                     },
                     new Train
                     {
@@ -50,16 +62,28 @@ namespace TrainTicketApp.Data
                         Thursday = new TimeSpan(9, 0, 0),
                         Friday = new TimeSpan(10, 0, 0),
                         Saturday = new TimeSpan(11, 0, 0),
-                        Sunday = new TimeSpan(12, 0, 0)
+                        Sunday = new TimeSpan(12, 0, 0),
+                        CarCount = 1,
+                        SeatCount = 50,
+                        AllSeats = 50,
+                        AvailableSeats = 50,
+                        ReservationPrice = 10,
+                        SupplementaryPrice = 5,
+                        AvailableSeatsMonday = 50,
+                        AvailableSeatsTuesday = 50,
+                        AvailableSeatsWednesday = 50,
+                        AvailableSeatsThursday = 50,
+                        AvailableSeatsFriday = 50,
+                        AvailableSeatsSaturday = 50,
+                        AvailableSeatsSunday = 50
                     }
                 );
 
                 context.SaveChanges();
 
-                // Look for any orders.
                 if (context.Orders.Any())
                 {
-                    return;   // DB has been seeded
+                    return;
                 }
 
                 context.Orders.AddRange(

@@ -1,4 +1,3 @@
-// TrainTicketApp/Models/Train.cs
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,5 +29,14 @@ namespace TrainTicketApp.Models
         public int AvailableSeats { get; set; }
         public int ReservationPrice { get; set; }
         public int SupplementaryPrice { get; set; }
+
+        public int AvailableSeatsMonday { get; set; }
+        public int AvailableSeatsTuesday { get; set; }
+        public int AvailableSeatsWednesday { get; set; }
+        public int AvailableSeatsThursday { get; set; }
+        public int AvailableSeatsFriday { get; set; }
+        public int AvailableSeatsSaturday { get; set; }
+        public int AvailableSeatsSunday { get; set; }
+        
     }
 }

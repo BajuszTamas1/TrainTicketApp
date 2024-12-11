@@ -13,6 +13,7 @@
             <th>Indulási hely</th>
             <th>Érkezési hely</th>
             <th>Indulási idő</th>
+            <th>Elérhető ülések</th>
         </tr>
         </thead>
         <tbody>
@@ -60,6 +61,38 @@
                             @if (train.Sunday != TimeSpan.Zero)
                             {
                                 <li>Vasárnap: @train.Sunday.ToString(@"hh\:mm")</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            @if (train.Monday != TimeSpan.Zero && train.TicketType == "Helyjegy")
+                            {
+                                <li>@train.AvailableSeatsMonday db</li>
+                            }
+                            @if (train.Tuesday != TimeSpan.Zero && train.TicketType == "Helyjegy")
+                            {
+                                <li>@train.AvailableSeatsTuesday db</li>
+                            }
+                            @if (train.Wednesday != TimeSpan.Zero && train.TicketType == "Helyjegy")
+                            {
+                                <li>@train.AvailableSeatsWednesday db</li>
+                            }
+                            @if (train.Thursday != TimeSpan.Zero && train.TicketType == "Helyjegy")
+                            {
+                                <li>@train.AvailableSeatsThursday db</li>
+                            }
+                            @if (train.Friday != TimeSpan.Zero && train.TicketType == "Helyjegy")
+                            {
+                                <li>@train.AvailableSeatsFriday db</li>
+                            }
+                            @if (train.Saturday != TimeSpan.Zero && train.TicketType == "Helyjegy")
+                            {
+                                <li>@train.AvailableSeatsSaturday db</li>
+                            }
+                            @if (train.Sunday != TimeSpan.Zero && train.TicketType == "Helyjegy")
+                            {
+                                <li>@train.AvailableSeatsSunday db</li>
                             }
                         </ul>
                     </td>

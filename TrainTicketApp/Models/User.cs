@@ -1,4 +1,3 @@
-// TrainTicketApp/Models/User.cs
 using System.ComponentModel.DataAnnotations;
 
 namespace TrainTicketApp.Models
