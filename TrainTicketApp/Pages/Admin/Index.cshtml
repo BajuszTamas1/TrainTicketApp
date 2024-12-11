@@ -18,7 +18,7 @@
         margin-bottom: 10px;
     }
 
-    h4{
+    h4 {
         margin-left: 10px;
     }
 
@@ -43,6 +43,7 @@
     <option value="1">Járat hozzáadása</option>
     <option value="2">Járatok módosítása</option>
     <option value="3">Diagramok</option>
+    <option value="4">Felhasználók listázása</option>
 </select>
         <form method="post" id="hozzaad" style="display: none;">
     <div class="form-group d-flex flex-wrap">
@@ -328,6 +329,36 @@
         </div>
     </div>
 </div>
+        <div id="felhasznalok" style="display: none;">
+    <h2>Felhasználók listája</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Felhasználónév</th>
+                <th>Email</th>
+                <th>Telefonszám</th>
+                <th>Cím</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user1 in Model.Users)
+                    {
+                        <tr>
+                            <td>@user1.Username</td>
+                            <td>@user1.Email</td>
+                            <td>@user1.PhoneNumber</td>
+                            <td>@user1.Address</td>
+                            <td>
+                                <form method="post" asp-page-handler="DeleteUserById" asp-route-id="@user1.Id">
+                                    <button type="submit" class="btn btn-danger">Törlés</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 }
 else
@@ -419,10 +450,20 @@ else
                 hozzaad.style.display = "none";
                 modosit.style.display = "block";
                 diag.style.display = "none";
-            } else {
+            } else if (viewSelector.value == "3") {
                 hozzaad.style.display = "none";
                 modosit.style.display = "none";
                 diag.style.display = "block";
+            } else if(viewSelector.value == "4") {
+                hozzaad.style.display = "none";
+                modosit.style.display = "none";
+                diag.style.display = "none";
+                felhasznalok.style.display = "block";
+            } else {
+                hozzaad.style.display = "none";
+                modosit.style.display = "none";
+                diag.style.display = "none";
+                felhasznalok.style.display = "none";
             }
         }
 

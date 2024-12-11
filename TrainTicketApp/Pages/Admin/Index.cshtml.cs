@@ -59,6 +59,7 @@ namespace TrainTicketApp.Pages.Admin
 
         public bool TrainAdded { get; set; }
         public IList<Train> Trains { get; set; } = new List<Train>();
+        public IList<User> Users { get; set; } = new List<User>();
 
         [BindProperty]
         public DateTime? StartDate { get; set; }
@@ -72,6 +73,7 @@ namespace TrainTicketApp.Pages.Admin
         public async Task OnGetAsync(DateTime? startDate, DateTime? endDate, string departureLocation, string arrivalLocation)
         {
             Trains = await _context.Trains.ToListAsync();
+            Users = await _context.Users.ToListAsync();
 
             StartDate = startDate;
             EndDate = endDate;
@@ -168,7 +170,7 @@ namespace TrainTicketApp.Pages.Admin
             await _context.SaveChangesAsync();
 
             TrainAdded = true;
-            await OnGetAsync(StartDate,EndDate,DepartureLocation,ArrivalLocation); // Refresh the list after adding a new train
+            await OnGetAsync(StartDate,EndDate,DepartureLocation,ArrivalLocation);
             return RedirectToPage();
         }
 
@@ -217,7 +219,7 @@ namespace TrainTicketApp.Pages.Admin
                 await _context.SaveChangesAsync();
             }
 
-            await OnGetAsync(StartDate,EndDate,DepartureLocation,ArrivalLocation); // Refresh the list after editing a train
+            await OnGetAsync(StartDate,EndDate,DepartureLocation,ArrivalLocation);
             return RedirectToPage();
         }
 
@@ -227,6 +229,18 @@ namespace TrainTicketApp.Pages.Admin
             if (train != null)
             {
                 _context.Trains.Remove(train);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostDeleteUserByIdAsync(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
 

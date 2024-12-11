@@ -27,6 +27,7 @@ namespace TrainTicketApp.Data
                         Distance = 100,
                         Price = 50,
                         TravelTime = "2:00",
+                        TicketType = "Normal",
                         Monday = new TimeSpan(6, 0, 0),
                         Tuesday = new TimeSpan(7, 0, 0),
                         Wednesday = new TimeSpan(8, 0, 0),
@@ -42,6 +43,7 @@ namespace TrainTicketApp.Data
                         Distance = 200,
                         Price = 100,
                         TravelTime = "4:00",
+                        TicketType = "Normal",
                         Monday = new TimeSpan(6, 0, 0),
                         Tuesday = new TimeSpan(7, 0, 0),
                         Wednesday = new TimeSpan(8, 0, 0),
@@ -72,6 +74,8 @@ namespace TrainTicketApp.Data
                         OrderDate = DateTime.Now,
                         Status = "Active",
                         DayOfWeek = "Monday",
+                        ArrivalLocation = "City D",
+                        DepartureLocation = "City C",
                         DepartureTime = new TimeSpan(6, 0, 0)
                     },
                     new Order
@@ -85,6 +89,8 @@ namespace TrainTicketApp.Data
                         OrderDate = DateTime.Now,
                         Status = "Active",
                         DayOfWeek = "Tuesday",
+                        ArrivalLocation = "City D",
+                        DepartureLocation = "City C",
                         DepartureTime = new TimeSpan(7, 0, 0)
                     }
                 );

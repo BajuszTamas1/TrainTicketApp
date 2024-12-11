@@ -6,6 +6,7 @@
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/TrainTicketApp.runtimeconfig.json
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/TrainTicketApp.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/TrainTicketApp.pdb
+/Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/BCrypt.Net-Next.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Humanizer.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.Build.Locator.dll
@@ -19,6 +20,7 @@
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Design.dll
+/Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Sqlite.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.Extensions.Caching.Abstractions.dll
@@ -32,6 +34,7 @@
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Microsoft.Extensions.Primitives.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Mono.TextTemplating.dll
+/Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Newtonsoft.Json.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/SQLitePCLRaw.batteries_v2.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/SQLitePCLRaw.core.dll
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/SQLitePCLRaw.provider.e_sqlite3.dll
@@ -158,5 +161,3 @@
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/obj/Debug/net8.0/TrainTicketApp.pdb
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/obj/Debug/net8.0/TrainTicketApp.genruntimeconfig.cache
 /Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/obj/Debug/net8.0/ref/TrainTicketApp.dll
-/Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/BCrypt.Net-Next.dll
-/Users/tamasbajusz/Desktop/TrainTicketApp/TrainTicketApp/bin/Debug/net8.0/Newtonsoft.Json.dll

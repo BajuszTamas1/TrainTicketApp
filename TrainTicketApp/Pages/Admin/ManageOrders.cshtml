@@ -1,11 +1,41 @@
 @page
-@model TrainTicketApp.Pages.Admin.ManageOrders
+@model TrainTicketApp.Pages.Admin.ManageOrdersModel
 @{
-    ViewData["Title"] = "ManageOrders";
+    ViewData["Title"] = "Renderlések kezelése";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<div>
-    
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Rendelés ID</th>
+            <th>Felhasználónév</th>
+            <th>Vonat ID</th>
+            <th>Indulási hely</th>
+            <th>Érkezési hely</th>
+            <th>Rendelés dátuma</th>
+            <th>Rendelés állapota</th>
+            <th>Műveletek</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.UserName</td>
+                <td>@order.TrainId</td>
+                <td>@order.DepartureLocation</td>
+                <td>@order.ArrivalLocation</td>
+                <td>@order.Status</td>
+                <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@order.Id">
+                        <button type="submit" class="btn btn-danger">Törlés</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

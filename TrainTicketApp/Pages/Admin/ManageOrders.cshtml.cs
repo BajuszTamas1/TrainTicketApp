@@ -1,24 +1,39 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TrainTicketApp.Models;
+using TrainTicketApp.Data;
 
 namespace TrainTicketApp.Pages.Admin
 {
-    public class ManageOrders : PageModel
+    public class ManageOrdersModel : PageModel
     {
-        private readonly ILogger<ManageOrders> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public ManageOrders(ILogger<ManageOrders> logger)
+        public ManageOrdersModel(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public void OnGet()
+        public IList<Order> Orders { get; set; }
+
+        public async Task OnGetAsync()
         {
+            Orders = await _context.Orders.ToListAsync();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order != null)
+            {
+                _context.Orders.Remove(order);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
         }
     }
 }
