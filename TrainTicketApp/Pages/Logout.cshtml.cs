@@ -11,7 +11,7 @@ namespace TrainTicketApp.Pages
         }
         public async Task OnPost()
         {
-            HttpContext.Session.Clear();  // Munkamenet törlése
+            HttpContext.Session.Clear();
             Response.Redirect("/Index");
             await Task.CompletedTask;
         }

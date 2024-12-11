@@ -1,4 +1,3 @@
-// TrainTicketApp/Services/TrainDepartureTimeService.cs
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;

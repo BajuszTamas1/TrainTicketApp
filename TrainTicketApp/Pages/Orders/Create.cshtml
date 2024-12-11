@@ -96,7 +96,7 @@
             var selectedTrain = availableTrains.find(t => t.Id == selectedTrainId);
 
             var dayAndTimeSelect = document.getElementById("dayAndTimeSelect");
-            dayAndTimeSelect.innerHTML = ""; // Clear existing options
+            dayAndTimeSelect.innerHTML = "";
 
             if (selectedTrain) {
                 if (selectedTrain.Monday != "00:00:00") {
@@ -136,7 +136,6 @@
             var ticketTypeSelect = document.getElementById("ticketType");
             var selectedTrainId = trainSelect.value;
 
-            // Clear existing options
             ticketTypeSelect.value = "";
 
             if (selectedTrainId) {

@@ -16,18 +16,17 @@ namespace TrainTicketApp.Pages.Orders
             _context = context;
         }
 
-        public Order Order { get; set; } = new Order(); // Initialize with a default value
-        public Train Train { get; set; } = new Train(); // Initialize with a default value
+        public Order Order { get; set; } = new Order();
+        public Train Train { get; set; } = new Train();
 
         public void OnGet(int orderId)
         {
-            Order = _context.Orders.FirstOrDefault(o => o.Id == orderId) ?? new Order(); // Set to a default value if not found
-            Train = _context.Trains.FirstOrDefault(t => t.Id == Order.TrainId) ?? new Train(); // Set to a default value if not found
+            Order = _context.Orders.FirstOrDefault(o => o.Id == orderId) ?? new Order();
+            Train = _context.Trains.FirstOrDefault(t => t.Id == Order.TrainId) ?? new Train();
 
-            // Ensure DepartureTime is valid
             if (Order.DepartureTime == TimeSpan.Zero)
             {
-                Order.DepartureTime = TimeSpan.FromHours(0); // Set to a default value if invalid
+                Order.DepartureTime = TimeSpan.FromHours(0);
             }
         }
 

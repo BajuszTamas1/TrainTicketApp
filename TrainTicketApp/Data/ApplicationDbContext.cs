@@ -1,4 +1,4 @@
-// TrainTicketApp/Data/ApplicationDbContext.cs
+
 using Microsoft.EntityFrameworkCore;
 using TrainTicketApp.Models;
 

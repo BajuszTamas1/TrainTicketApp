@@ -138,7 +138,7 @@ namespace TrainTicketApp.Pages.Admin
                 ArrivalLocation = ArrivalLocation,
                 Distance = Distance,
                 Price = Price,
-                TravelTime = TravelTime, // Ensure TravelTime is set
+                TravelTime = TravelTime,
                 Monday = TimeSpan.TryParse(Monday, out var monday) ? monday : TimeSpan.Zero,
                 Tuesday = TimeSpan.TryParse(Tuesday, out var tuesday) ? tuesday : TimeSpan.Zero,
                 Wednesday = TimeSpan.TryParse(Wednesday, out var wednesday) ? wednesday : TimeSpan.Zero,
@@ -189,7 +189,7 @@ namespace TrainTicketApp.Pages.Admin
                 train.DepartureLocation = DepartureLocation;
                 train.ArrivalLocation = ArrivalLocation;
                 train.Distance = Distance;
-                train.TravelTime = TravelTime; // Ensure TravelTime is set
+                train.TravelTime = TravelTime;
                 train.Monday = TimeSpan.TryParse(Monday, out var monday) ? monday : TimeSpan.Zero;
                 train.Tuesday = TimeSpan.TryParse(Tuesday, out var tuesday) ? tuesday : TimeSpan.Zero;
                 train.Wednesday = TimeSpan.TryParse(Wednesday, out var wednesday) ? wednesday : TimeSpan.Zero;

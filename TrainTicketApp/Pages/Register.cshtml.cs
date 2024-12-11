@@ -43,12 +43,10 @@ namespace TrainTicketApp.Pages
 
 		public void OnGet()
 		{
-			// A GET request does nothing, just loads the page
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
-			// Validate required fields
 			if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(ConfirmPassword) ||
 				string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(PhoneNumber) || string.IsNullOrEmpty(Address))
 			{
@@ -56,14 +54,12 @@ namespace TrainTicketApp.Pages
 				return Page();
 			}
 
-			// Check if the two passwords match
 			if (Password != ConfirmPassword)
 			{
 				ErrorMessage = "Passwords do not match.";
 				return Page();
 			}
 
-			// Check if the username already exists
 			var existingUser = await _context.Users
 				.FirstOrDefaultAsync(u => u.Username == Username);
 
@@ -73,27 +69,23 @@ namespace TrainTicketApp.Pages
 				return Page();
 			}
 
-			// Hash the password
 			string salt = BCrypt.Net.BCrypt.GenerateSalt();
 			var hashedPassword = BCrypt.Net.BCrypt.HashPassword(Password, salt);
 
-			// Create a new user
 			var newUser = new User
 			{
 				Username = Username,
 				Password = hashedPassword,
-				Role = "User",  // Default role
+				Role = "User",
 				Name = Name,
 				Email = Email,
 				PhoneNumber = PhoneNumber,
 				Address = Address
 			};
 
-			// Add the user to the database
 			_context.Users.Add(newUser);
 			await _context.SaveChangesAsync();
 
-			// Redirect to the login page after successful registration
 			return RedirectToPage("Login");
 		}
 	}
